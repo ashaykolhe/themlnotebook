@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2791514593_3552357419_223132457.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_2790173397_2424699749.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_2248806217_2044199411.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_3181434928_2038102532.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_1201339546_4224846036.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_2666197528_3091860611.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene33LearningCurves/2197675592_3507803099_424042445.mp4'

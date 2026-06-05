@@ -1,0 +1,1 @@
+Give me a few youtube shorts idea for any famous data science topic. I will be asking you for generating script and manim code for that idea. It should hook the viewer. I am using manim community edition. Add script text below animation as subtitle so that i dont have to do voiceover and viewer can directly read the text. Keep the video below 60 seconds.

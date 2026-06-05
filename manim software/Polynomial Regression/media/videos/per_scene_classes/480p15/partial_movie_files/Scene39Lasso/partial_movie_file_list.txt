@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2791514593_1969502087_223132457.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2197675592_2298628474_1957943706.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2197675592_3670096149_3257052498.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2197675592_3080524967_3155197911.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2197675592_2428774157_1005040001.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene39Lasso/2197675592_1072381525_1418717748.mp4'

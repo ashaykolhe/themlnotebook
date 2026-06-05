@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2791514593_3995312040_223132457.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_2905217030_2548410540.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_1128523015_3170104131.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_1536962822_530936301.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_1619289640_3750383897.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_3591924740_2537366501.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_2666197528_677188270.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene23AssumptionOutliers/2197675592_1011966370_3573067524.mp4'

@@ -1,0 +1,53 @@
+first prompt
+
+I want to create a youtube video for my data science channel with the data present in this file. This file contains everything about polynomial regression. I want to create 2d animations in manim. Create detailed youtube script with anim cues. Create manim python scripts for each anim cue as per youtube script.
+
+Please ensure in each manim python script -
+
+Keep script sentences short and simple.
+Indentation is correct.
+No line splling outside of boxes.
+No overlapping of boxes if they are one below other. If multiple boxes one below other, make sure text in each box is aligned with each other. No overlapping of texts.
+All symbols or unicode characters are rendered as symbols inside MathTex not as text. Use MathTex whereever symbols(beta, beta-hat, eps, y-hat, etc.) are present instead of simple Text. Always verify if a particular text is symbol or not as I dont want to repeatedly ask you to correct symbols that are printed as text. All tables are aligned correctly with proper wordbreaks.
+Ensure tables and table cells are correctly aligned. Text inside table cells should not spill. If required, word wrap text inside table cells. Keep font size small as large font has a tendancy to spill or overlap.
+
+
+Make sure pros and cons arent skipped. There should.be pros and cons anim with animation. Add text anims with animation as well wherever applicable.
+
+Create Master sequence guide. Create and name anim files such that I can run all of them one by one and the videos generated
+
+Verify that all anim files are correct. Verify that everything is present in every manim python script. That they render precisely the concept explained in the html file I have uploaded.
+
+I dont want to do voiceover so add subtitles to the manim files from generated script. 
+
+Ensure subtitles are not overlapping with each other or with animations. They should have black background and white text color.
+
+Create one single manim python script with only one class and all the code within it. I want one video only at the end of script run so that I dont have to edit multiple videos in an editing software.
+
+
+
+
+
+
+second prompt
+
+Please verify is file has everything and everything is correct.
+Please ensure in each manim python script -
+
+Keep script sentences short and simple.
+Indentation is correct.
+No line splling outside of boxes.
+No overlapping of boxes if they are one below other. If multiple boxes one below other, make sure text in each box is aligned with each other. No overlapping of texts.
+All symbols or unicode characters are rendered as symbols inside MathTex not as text. Use MathTex whereever symbols(beta, beta-hat, eps, y-hat, etc.) are present instead of simple Text. Always verify if a particular text is symbol or not as I dont want to repeatedly ask you to correct symbols that are printed as text. All tables are aligned correctly with proper wordbreaks.
+Ensure tables and table cells are correctly aligned. Text inside table cells should not spill. If required, word wrap text inside table cells. Keep font size small as large font has a tendancy to spill or overlap.
+
+
+
+third prompt
+
+give script run command to run each anim separately and give script run command to run script together. Give parallel run script as well so that I can generate files faster for checking them individually.
+
+
+
+
+

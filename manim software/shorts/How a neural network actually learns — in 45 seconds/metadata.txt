@@ -1,0 +1,43 @@
+How a Neural Network Actually Learns (It's Embarrassingly Simple)
+
+Forget the Hype. This Is ALL a Neural Net Does. #shorts
+
+
+
+
+
+
+No magic. No black box. Just math — repeated a million times.
+
+In 45 seconds you'll understand:
+- What a neural network actually does
+- How gradient descent works
+- What "loss" means and why it matters
+- How weights update with every training step
+
+This is the foundation of every AI model you've ever used — GPT, image generators, recommendation engines — all of it.
+
+-–-
+Want the full deep-dive?
+- Full linear regression video: [link]
+- GitHub code + Manim animations: [link]
+
+-–-
+Tags: #MachineLearning #NeuralNetwork #DataScience #AI #GradientDescent #DeepLearning #Shorts #LearnAI #Python #DataScienceShorts
+
+
+
+
+
+Full breakdown of every step in the video:
+
+[0:00] Hook — what we're covering
+[0:04] The 3-layer network
+[0:09] Forward pass (making a prediction)
+[0:14] Computing the loss (the mistake)
+[0:19] Gradient descent (sliding down the curve)
+[0:27] Updating the weights
+[0:33] The full training loop
+[0:39] The punchline
+
+What topic should I cover next? Drop it below and I'll make a short for it!

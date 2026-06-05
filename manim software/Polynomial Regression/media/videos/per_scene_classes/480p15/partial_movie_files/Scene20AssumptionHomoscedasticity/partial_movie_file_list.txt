@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2791514593_1422607477_223132457.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_2873628105_276265237.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_2259470813_3585180777.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_3479989706_1930127334.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_3296979669_1499377294.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_2666197528_1530081365.mp4'
+file 'file:B:/Youtube channel/themlnotebook/manim software/Polynomial Regression/media/videos/per_scene_classes/480p15/partial_movie_files/Scene20AssumptionHomoscedasticity/2197675592_1939585268_2499728277.mp4'

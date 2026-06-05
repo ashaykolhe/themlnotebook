@@ -1,0 +1,3 @@
+There is a problem in text_part.py   in textq
+Problem: text is breaking out of table cells
+only fix this file
