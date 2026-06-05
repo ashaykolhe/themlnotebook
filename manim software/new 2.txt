@@ -1,0 +1,46 @@
+scene_s03_scatter - line should pass through the points. points should be scattered a little.
+scene_s05_simple_vs_multiple - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s08_symbol_table - table is not aligned. It's shifted right. The first 2 columns are outside the table. The symbols y-hat, beta_0. beta_1 ... beta_n, x_1 ... x_n should appear as symbols not just text
+scene_s11_coeff_interp - beta should be symbol not text
+scene_s12_ols_cost - "MSE is" text line is overlapping with graph
+scene_s14_normal_eq - DEcrease font size of text so that overlapping doesnt occur
+scene_s15_normal_eq_pc - Cons column text in cells is splling
+scene_s16_linemo_overview - text is spilling outside hexagon
+scene_s18_linearity_pc - Cons column text in cells is splling
+scene_s20_homo_pc - Cons column text in cells is splling
+scene_s22_multi_pc - Cons column text in cells is splling
+scene_s23_independence - eps_i and eps_j should be symbols
+scene_s24_independence_pc - Cons column text in cells is splling
+scene_s26_normality_pc - Cons column text in cells is splling
+scene_s27_outliers - text within boxes is overlapping
+scene_s29_metrics_overview - boxes are splling outside frame of video
+scene_s36_r2 - R^2 should be symbol not text
+scene_s36_r2 - R^2 should be symbol not text. table is not aligned. It's shifted right. The first 2 columns are outside the table 
+scene_s38_r2_pc - Pros and Cons column text in cells is splling
+scene_s39_adj_r2 - R^2 should be symbol not text
+scene_s40_adj_r2_pc - Pros and Cons column text in cells is splling
+scene_s41_mape - y_i should be a symbol
+scene_s42_mape_pc - Pros and Cons column text in cells is splling
+scene_s45_gd_steps - y-hat,beta,X-transpose,alpha,epsilon should be symbols
+scene_s46_learning_rate - too high learning rate graph that is oscilating should be in the middle instead of at the bottom of the graph
+scene_s47_gd_types - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s48_gd_pc - Pros and Cons column text in cells is splling
+scene_s50_ridge - lambda should be symbol
+scene_s53_lasso_geometry - lasso circle doesnt look correct. The circle should pass through diamond edge
+scene_s56_enet_pc - Cons column text in cells is splling
+scene_s57_reg_table - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s61_feat_eng - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s62_interactions - beta_3 should be a symbol
+scene_s63_encoding - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s66_bias_variance - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s68_bv_table - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s71_cv_pc - Pros and Cons column text in cells is splling
+scene_s72_pipeline - increase box height. THere is spilling as well as overlapping of text
+scene_s73_pipeline_pc - Pros and Cons column text in cells is splling
+scene_s74_lr_params - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s75_ridge_params - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s76_lasso_params - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s77_enet_params - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s78_when_to_use - table is not aligned. It's shifted right. The first 2 columns are outside the table
+scene_s80_interview_qa - last boxes are splling outside video frame
+scene_s81_summary - last boxes are splling outside video frame

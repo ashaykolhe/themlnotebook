@@ -1,0 +1,70 @@
+# YouTube Short — Decision Trees Explained Visually
+## Metadata Pack
+
+---
+
+## 🎬 TITLE
+
+Decision Trees Explained in 60 Seconds (With Gini Impurity!)
+
+---
+
+## 📝 DESCRIPTION
+
+How does a machine decide whether to approve your loan? It asks questions — just like you do.
+
+In this short, I break down exactly how a Decision Tree works:
+✅ What features are and how the model sees your data
+✅ What Gini Impurity is and why the tree uses it to pick splits
+✅ How the tree routes a real example to a prediction
+✅ Why overfitting is the #1 danger and how to fix it with max_depth
+
+Decision Trees are the foundation of Random Forests and XGBoost — two of the most powerful ML models in production today. If you don't understand trees, you don't understand ensembles.
+
+All animations made with Manim Community Edition.
+
+---
+
+🔔 Subscribe for more data science explained visually — new short every week.
+
+📌 Full playlist: [link]
+📚 Want the code? GitHub: [link]
+
+---
+
+#DataScience #MachineLearning #DecisionTree #GiniImpurity #Python #AI #MLExplained #LearnML #DataScienceShorts #Shorts
+
+---
+
+## 🏷️ TAGS
+
+decision tree, decision tree explained, gini impurity, machine learning explained, data science shorts, decision tree machine learning, how decision trees work, machine learning for beginners, data science for beginners, decision tree python, sklearn decision tree, random forest explained, XGBoost, overfitting explained, machine learning visualization, manim animation, AI explained simply, data science animation, ML concepts, classification algorithm
+
+---
+
+## 📌 PINNED COMMENT
+
+**What we covered in this Short 🧵**
+
+0:00 — Your brain already uses decision trees
+0:04 — The loan prediction problem (features table)
+0:12 — Gini Impurity: how the tree picks the best split
+0:22 — Building the tree: root node + child splits
+0:34 — Tracing a real example through the tree
+0:44 — Overfitting warning + how to fix it (max_depth)
+0:52 — Key takeaways + ensemble connection
+
+💡 The key formula:
+Gini = 1 − (p_yes² + p_no²)
+→ 0.0 means a perfectly pure node (all one class)
+→ 0.5 means maximum chaos (50/50 mix)
+
+The tree always picks the split that lowers Gini the most.
+
+🔁 Decision Trees are the base learner for:
+→ Random Forest (bagging many trees)
+→ XGBoost / LightGBM (boosting trees sequentially)
+
+Understanding this one algorithm unlocks most of modern ML.
+
+Drop a ❓ below if you want a full video on Random Forests next!

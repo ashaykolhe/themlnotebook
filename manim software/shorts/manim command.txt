@@ -1,0 +1,1 @@
+manim --flush_cache -pqh .\gradient_descent_subtitles.py GradientDescentShort -r 1080,1920

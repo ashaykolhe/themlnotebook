@@ -1,0 +1,51 @@
+Your model hit 99% accuracy. That's actually BAD. #shorts #datascience #machinelearning
+
+
+
+
+When your ML model memorises training data instead of learning from it — that's overfitting. And it destroys your model's real-world performance.
+
+In this short: what overfitting looks like, why it happens, and 3 ways to fix it.
+
+---- What you'll learn ----
+- Why high training accuracy can be a red flag
+- The gap between training vs. test accuracy curves
+- 3 proven fixes: more data, regularisation, simpler models
+
+---- Chapters ----
+0:00 The hook
+0:05 Accuracy vs. complexity chart
+0:18 Training curve
+0:26 Test curve
+0:34 The overfitting zone
+0:44 How to fix it
+0:52 Outro
+
+---- More data science in 60 seconds ----
+Follow for weekly shorts on ML, statistics, and data science concepts.
+
+#datascience #machinelearning #overfitting #mlops #python #deeplearning #ai #dataengineer #shorts #learnpython
+
+
+
+
+
+#datascience #machinelearning #overfitting #biasvariancetradeoff #traintestsplit #modelaccuracy #regularisation #L1L2 #deeplearning #neuralnetwork #pythontutorial #sklearn #mltips #datascientist #shorts #learnpython #AIexplained #mlbeginner #statistics #mlops
+
+
+
+
+
+
+
+Full explanation + links in the description!
+
+Overfitting = your model memorised the training data, not the patterns.
+
+Quick cheat sheet:
+- Overfit = high train accuracy, low test accuracy
+- Fix 1: get more training data
+- Fix 2: add L1 or L2 regularisation
+- Fix 3: simplify your model (fewer layers / prune the tree)
+
+Which topic should I cover next? Drop it below!

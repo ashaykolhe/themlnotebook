@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Regression — Complete ML Textbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Code+Pro:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0f14; --surface:#13161e; --surface2:#1a1e2a; --border:#252a38;
+    --accent:#4f9eff; --accent2:#f97316; --accent3:#10b981; --accent4:#a855f7;
+    --text:#e2e8f0; --muted:#8892a4; --heading:#f8fafc; --code-bg:#0a0c10; --warn:#fbbf24;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.75;}
+  .hero{background:linear-gradient(135deg,#0d0f14 0%,#111827 40%,#0f172a 100%);border-bottom:1px solid var(--border);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(79,158,255,.12) 0%,transparent 70%);}
+  .hero-tag{display:inline-block;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(79,158,255,.3);padding:4px 14px;border-radius:99px;margin-bottom:24px;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--heading);line-height:1.1;margin-bottom:18px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{max-width:640px;margin:0 auto 32px;font-size:1.1rem;color:var(--muted);font-weight:300;}
+  .badge-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .badge{background:var(--surface2);border:1px solid var(--border);padding:6px 16px;border-radius:99px;font-size:.8rem;color:var(--muted);}
+  .toc-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px 36px;margin:40px auto;max-width:900px;}
+  .toc-wrap h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--heading);margin-bottom:18px;}
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 32px;}
+  .toc-grid a{color:var(--muted);text-decoration:none;font-size:.9rem;padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:8px;}
+  .toc-grid a:hover{color:var(--accent);border-color:rgba(79,158,255,.3);}
+  .toc-num{color:var(--accent);font-size:.75rem;font-weight:700;min-width:24px;}
+  .container{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+  section{margin:56px 0;scroll-margin-top:24px;}
+  .section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .section-num{background:var(--accent);color:#000;font-weight:700;font-size:.75rem;letter-spacing:.1em;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  h2.sec-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:700;color:var(--heading);}
+  h3.sub-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--heading);margin:32px 0 12px;padding-left:14px;border-left:3px solid var(--accent);}
+  h4.mini-title{font-size:.95rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 8px;}
+  p{margin-bottom:14px;color:var(--text);}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin:16px 0;}
+  .card-accent{border-left:3px solid var(--accent);}
+  .card-warn{border-left:3px solid var(--warn);background:rgba(251,191,36,.04);}
+  .card-green{border-left:3px solid var(--accent3);}
+  .card-purple{border-left:3px solid var(--accent4);}
+  .card-orange{border-left:3px solid var(--accent2);}
+  .card-red{border-left:3px solid #f87171;background:rgba(248,113,113,.04);}
+  .card-title{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+  .card-accent .card-title{color:var(--accent);}
+  .card-warn .card-title{color:var(--warn);}
+  .card-green .card-title{color:var(--accent3);}
+  .card-purple .card-title{color:var(--accent4);}
+  .card-orange .card-title{color:var(--accent2);}
+  .card-red .card-title{color:#f87171;}
+  /* pros-cons two column */
+  .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  .pc-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+  .pc-card.pros{border-top:3px solid var(--accent3);}
+  .pc-card.cons{border-top:3px solid #f87171;}
+  .pc-card h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:700;}
+  .pc-card.pros h4{color:var(--accent3);}
+  .pc-card.cons h4{color:#f87171;}
+  .pc-card ul{padding-left:18px;margin:0;}
+  .pc-card li{font-size:.88rem;margin-bottom:6px;}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:22px 26px;overflow-x:auto;font-family:'Source Code Pro',monospace;font-size:.82rem;line-height:1.7;margin:20px 0;}
+  pre .c{color:#6b7280;font-style:italic;}
+  pre .k{color:#c084fc;}
+  pre .s{color:#86efac;}
+  pre .n{color:#93c5fd;}
+  pre .f{color:#fde68a;}
+  pre .p{color:var(--text);}
+  .formula{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px 24px;margin:16px 0;font-family:'Source Code Pro',monospace;font-size:1rem;color:#fde68a;text-align:center;letter-spacing:.03em;}
+  .chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;margin:22px 0;text-align:center;}
+  .chart-caption{font-size:.82rem;color:var(--muted);margin-top:12px;font-style:italic;}
+  svg text{font-family:'Lato',sans-serif;}
+  .table-wrap{overflow-x:auto;margin:18px 0;}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;}
+  th{background:var(--surface2);color:var(--heading);font-weight:700;text-align:left;padding:11px 14px;border-bottom:2px solid var(--border);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;}
+  td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  td.good{color:var(--accent3);font-weight:600;}
+  td.bad{color:#f87171;font-weight:600;}
+  td.neu{color:var(--warn);}
+  ul,ol{padding-left:22px;margin-bottom:14px;}
+  li{margin-bottom:7px;}
+  li::marker{color:var(--accent);}
+  code{background:var(--surface2);color:#f97316;padding:2px 6px;border-radius:4px;font-family:'Source Code Pro',monospace;font-size:.85em;}
+  .interview-box{background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(79,158,255,.07));border:1px solid rgba(168,85,247,.25);border-radius:10px;padding:20px 24px;margin:18px 0;}
+  .interview-box .q{color:var(--accent4);font-weight:700;margin-bottom:8px;font-size:.9rem;}
+  .interview-box .a{color:var(--text);font-size:.9rem;}
+  .assumption-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0;}
+  .assumption-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+  .assumption-card .name{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin:18px 0;}
+  .metric-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center;}
+  .metric-card .symbol{font-size:1.5rem;color:var(--accent);font-family:'Source Code Pro',monospace;}
+  .metric-card .name{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:5px 0 3px;}
+  .metric-card .range{font-size:.78rem;color:var(--accent3);}
+  .step-list{counter-reset:steps;list-style:none;padding:0;}
+  .step-list li{counter-increment:steps;display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;}
+  .step-list li::before{content:counter(steps);background:var(--accent);color:#000;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0;margin-top:3px;}
+  .divider{border:none;border-top:1px solid var(--border);margin:48px 0;}
+  .hl{color:var(--accent);font-weight:700;}
+  .hl2{color:var(--accent2);font-weight:700;}
+  .hl3{color:var(--accent3);font-weight:700;}
+  .hl4{color:var(--accent4);font-weight:700;}
+  .sticky-nav{position:sticky;top:0;z-index:100;background:rgba(13,15,20,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:9px 24px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .sticky-nav a{color:var(--muted);text-decoration:none;font-size:.76rem;padding:4px 9px;border-radius:6px;transition:all .15s;white-space:nowrap;}
+  .sticky-nav a:hover{background:var(--surface2);color:var(--text);}
+  .callout{background:var(--surface2);border-radius:8px;padding:14px 18px;margin:14px 0;font-size:.9rem;display:flex;gap:12px;align-items:flex-start;}
+  .callout .icon{font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+  @media(max-width:640px){.toc-grid{grid-template-columns:1fr;}.hero{padding:50px 20px 40px;}.sticky-nav{display:none;}.pc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Chapter 1 · Supervised Learning</div>
+  <h1>Linear <span>Regression</span></h1>
+  <p>The complete textbook reference — every concept, every pros &amp; con, all sklearn hyperparameters, diagnostics, and 12 interview Q&amp;As.</p>
+  <div class="badge-row">
+    <span class="badge">📐 Mathematics</span>
+    <span class="badge">⚙️ scikit-learn</span>
+    <span class="badge">📊 Diagnostics</span>
+    <span class="badge">🎯 Interview Ready</span>
+    <span class="badge">✅ Pros &amp; Cons Every Section</span>
+  </div>
+</div>
+
+<nav class="sticky-nav">
+  <a href="#s1">Intuition</a>
+  <a href="#s2">Math</a>
+  <a href="#s3">OLS</a>
+  <a href="#s4">Assumptions</a>
+  <a href="#s5">Metrics</a>
+  <a href="#s6">Gradient Descent</a>
+  <a href="#s7">Regularization</a>
+  <a href="#s8">Diagnostics</a>
+  <a href="#s9">Feature Eng.</a>
+  <a href="#s10">Overfitting</a>
+  <a href="#s11">CV &amp; Pipelines</a>
+  <a href="#s12">sklearn Code</a>
+  <a href="#s13">Hyperparams</a>
+  <a href="#s14">Pros &amp; Cons</a>
+  <a href="#s15">Interview Q&amp;A</a>
+</nav>
+
+<div class="container">
+<div class="toc-wrap">
+  <h2>📚 Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#s1"><span class="toc-num">01</span> What is Linear Regression?</a>
+    <a href="#s2"><span class="toc-num">02</span> The Mathematical Model</a>
+    <a href="#s3"><span class="toc-num">03</span> OLS &amp; Normal Equations</a>
+    <a href="#s4"><span class="toc-num">04</span> LINE-MO Assumptions</a>
+    <a href="#s5"><span class="toc-num">05</span> Evaluation Metrics</a>
+    <a href="#s6"><span class="toc-num">06</span> Gradient Descent</a>
+    <a href="#s7"><span class="toc-num">07</span> Regularization: Ridge / Lasso / ElasticNet</a>
+    <a href="#s8"><span class="toc-num">08</span> Residual Diagnostics</a>
+    <a href="#s9"><span class="toc-num">09</span> Feature Engineering</a>
+    <a href="#s10"><span class="toc-num">10</span> Overfitting, Underfitting &amp; Bias-Variance</a>
+    <a href="#s11"><span class="toc-num">11</span> Cross-Validation &amp; Pipelines</a>
+    <a href="#s12"><span class="toc-num">12</span> Complete scikit-learn Code</a>
+    <a href="#s13"><span class="toc-num">13</span> Hyperparameter Deep Dive</a>
+    <a href="#s14"><span class="toc-num">14</span> Overall Pros, Cons &amp; When to Use</a>
+    <a href="#s15"><span class="toc-num">15</span> Tricky Interview Q&amp;A</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- S1: INTUITION -->
+<!-- ════════════════════════════════════════ -->
+<section id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2 class="sec-title">What is Linear Regression?</h2>
+  </div>
+
+  <h3 class="sub-title">Real-World Analogy First</h3>
+  <p>You're a real estate agent. You notice bigger houses cost more. You collect data on 100 houses (size in sq ft, sale price), plot them, and draw the one straight line that best captures the trend. When a client asks "how much is a 2,000 sq ft house?", you look up 2,000 on the x-axis, trace to the line, read the price. That's linear regression.</p>
+
+  <div class="chart-wrap">
+    <svg width="560" height="330" viewBox="0 0 560 330">
+      <line x1="60" y1="290" x2="520" y2="290" stroke="#252a38" stroke-width="1.5"/>
+      <line x1="60" y1="20"  x2="60"  y2="290" stroke="#252a38" stroke-width="1.5"/>
+      <text x="290" y="320" fill="#8892a4" font-size="12" text-anchor="middle">House Size (sq ft)</text>
+      <text x="18" y="160" fill="#8892a4" font-size="12" text-anchor="middle" transform="rotate(-90,18,160)">Sale Price ($k)</text>
+      <text x="120" y="306" fill="#6b7280" font-size="10" text-anchor="middle">1000</text>
+      <text x="210" y="306" fill="#6b7280" font-size="10" text-anchor="middle">1500</text>
+      <text x="300" y="306" fill="#6b7280" font-size="10" text-anchor="middle">2000</text>
+      <text x="390" y="306" fill="#6b7280" font-size="10" text-anchor="middle">2500</text>
+      <text x="480" y="306" fill="#6b7280" font-size="10" text-anchor="middle">3000</text>
+      <text x="50" y="270" fill="#6b7280" font-size="10" text-anchor="end">100</text>
+      <text x="50" y="215" fill="#6b7280" font-size="10" text-anchor="end">200</text>
+      <text x="50" y="160" fill="#6b7280" font-size="10" text-anchor="end">300</text>
+      <text x="50" y="105" fill="#6b7280" font-size="10" text-anchor="end">400</text>
+      <text x="50" y="50"  fill="#6b7280" font-size="10" text-anchor="end">500</text>
+      <line x1="60" y1="270" x2="520" y2="270" stroke="#1a1e2a" stroke-width="1"/>
+      <line x1="60" y1="215" x2="520" y2="215" stroke="#1a1e2a" stroke-width="1"/>
+      <line x1="60" y1="160" x2="520" y2="160" stroke="#1a1e2a" stroke-width="1"/>
+      <line x1="60" y1="105" x2="520" y2="105" stroke="#1a1e2a" stroke-width="1"/>
+      <line x1="60" y1="50"  x2="520" y2="50"  stroke="#1a1e2a" stroke-width="1"/>
+      <circle cx="85"  cy="258" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="105" cy="248" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="130" cy="236" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="150" cy="230" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="165" cy="240" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="185" cy="222" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="205" cy="210" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="220" cy="218" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="240" cy="200" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="260" cy="195" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="275" cy="205" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="290" cy="185" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="310" cy="175" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="325" cy="182" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="345" cy="165" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="365" cy="155" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="380" cy="162" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="400" cy="145" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="420" cy="136" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="440" cy="126" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="460" cy="118" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="480" cy="106" r="4" fill="#4f9eff" opacity=".8"/>
+      <circle cx="500" cy="96"  r="4" fill="#4f9eff" opacity=".8"/>
+      <line x1="60" y1="268" x2="520" y2="82" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- residual dashes -->
+      <line x1="205" y1="210" x2="205" y2="198" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <line x1="365" y1="155" x2="365" y2="148" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="230" y="196" fill="#fbbf24" font-size="10">residual</text>
+      <text x="425" y="72" fill="#f97316" font-size="11" font-weight="700">Best-fit Line (ŷ)</text>
+      <circle cx="80" cy="32" r="4" fill="#4f9eff"/>
+      <text x="90" y="36" fill="#8892a4" font-size="11">Observed data points</text>
+      <line x1="195" y1="32" x2="225" y2="32" stroke="#f97316" stroke-width="2.5"/>
+      <text x="232" y="36" fill="#8892a4" font-size="11">Regression line</text>
+    </svg>
+    <p class="chart-caption">Figure 1.1 — The regression line minimises the sum of squared vertical distances (residuals) from each data point.</p>
+  </div>
+
+  <h3 class="sub-title">What / How / Why / When / Where</h3>
+  <div class="card card-accent"><div class="card-title">What</div><p>A supervised learning algorithm that models the relationship between input features (X) and a <strong>continuous numerical target</strong> (y) as a linear function, then uses that function to make predictions on unseen data.</p></div>
+  <div class="card card-green"><div class="card-title">How</div><p>It finds the line (or hyperplane) that <strong>minimises the sum of squared differences</strong> between actual y values and predicted ŷ values — Ordinary Least Squares (OLS). It does this either analytically via the Normal Equation, or iteratively via gradient descent.</p></div>
+  <div class="card card-orange"><div class="card-title">Why</div><p>Interpretable, extremely fast, has a proven closed-form solution, and is the canonical <strong>baseline model</strong> for any regression problem. If a simpler model can achieve acceptable performance, it should be preferred over complex ones.</p></div>
+  <div class="card card-purple"><div class="card-title">When</div>
+    <ul>
+      <li>Target is a <strong>continuous number</strong> (price, salary, temperature, demand)</li>
+      <li>The relationship between features and target is <strong>approximately linear</strong></li>
+      <li>You need <strong>interpretability</strong> — stakeholders need to understand why predictions are made</li>
+      <li>As a mandatory <strong>baseline</strong> before trying ensemble/deep learning models</li>
+      <li>Small-to-medium datasets (thousands to low millions of rows)</li>
+    </ul>
+  </div>
+  <div class="card card-warn"><div class="card-title">Where (Industry Applications)</div>
+    <ul>
+      <li><strong>Finance:</strong> predicting stock returns, credit scoring, risk models</li>
+      <li><strong>Real estate:</strong> property valuation (Zillow's Zestimate is partly linear)</li>
+      <li><strong>Healthcare:</strong> predicting blood pressure, hospital length of stay, drug dosage</li>
+      <li><strong>Marketing:</strong> sales forecasting from ad spend (media mix models)</li>
+      <li><strong>Economics:</strong> GDP forecasting, demand elasticity</li>
+      <li><strong>HR:</strong> salary benchmarking</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">Simple vs. Multiple Linear Regression</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Type</th><th>Features</th><th>Example</th><th>Geometry</th></tr>
+    <tr><td><strong>Simple</strong></td><td>1 feature</td><td>Price ~ Size</td><td>A line in 2D</td></tr>
+    <tr><td><strong>Multiple</strong></td><td>2+ features</td><td>Price ~ Size + Beds + Location score</td><td>A hyperplane in N-D space</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Overall Pros &amp; Cons — Linear Regression</h3>
+  <div class="pc-grid">
+    <div class="pc-card pros">
+      <h4>✅ Pros</h4>
+      <ul>
+        <li><strong>Highly interpretable</strong> — coefficients directly express feature effects in real units</li>
+        <li><strong>Blazing fast</strong> — closed-form solution; training is O(np²)</li>
+        <li><strong>No hyperparameters</strong> (base OLS) — no tuning needed out of the box</li>
+        <li><strong>Theoretically optimal</strong> — BLUE (Best Linear Unbiased Estimator) per Gauss-Markov when assumptions hold</li>
+        <li><strong>Extrapolates</strong> — can predict beyond the training range (though risky)</li>
+        <li><strong>Statistical inference</strong> — p-values and confidence intervals via statsmodels</li>
+        <li><strong>Great baseline</strong> — if it performs well, you don't need a complex model</li>
+        <li><strong>Memory efficient</strong> — only stores p coefficients, not the training data</li>
+      </ul>
+    </div>
+    <div class="pc-card cons">
+      <h4>❌ Cons</h4>
+      <ul>
+        <li><strong>Assumes linearity</strong> — fundamentally wrong for non-linear relationships</li>
+        <li><strong>Sensitive to outliers</strong> — squared loss amplifies extreme errors enormously</li>
+        <li><strong>Multicollinearity</strong> — correlated features produce unstable, uninterpretable coefficients</li>
+        <li><strong>No automatic interactions</strong> — unlike tree models, won't learn feature interactions on its own</li>
+        <li><strong>Struggles when p &gt; n</strong> — more features than samples → Normal Eq fails</li>
+        <li><strong>Scale sensitive</strong> — coefficients are not comparable across differently-scaled features</li>
+        <li><strong>Strict assumptions</strong> — violated assumptions undermine inference (p-values become untrustworthy)</li>
+        <li><strong>Not robust</strong> — single influential point can shift the entire line</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S2: MATH MODEL -->
+<!-- ════════════════════════════════════════ -->
+<section id="s2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2 class="sec-title">The Mathematical Model</h2>
+  </div>
+
+  <h3 class="sub-title">The Equation</h3>
+  <p>Any straight line is <code>y = mx + b</code>. In ML notation:</p>
+  <div class="formula">ŷ = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ</div>
+  <div class="table-wrap"><table>
+    <tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr>
+    <tr><td><code>ŷ</code></td><td>y-hat (predicted)</td><td>Model's output. Not the true y — it's our best guess.</td></tr>
+    <tr><td><code>β₀</code></td><td>Intercept / bias</td><td>Value of ŷ when all features = 0. Where the line crosses the y-axis.</td></tr>
+    <tr><td><code>β₁…βₙ</code></td><td>Coefficients / weights / slopes</td><td>How much ŷ changes per 1-unit increase in that feature, all else constant.</td></tr>
+    <tr><td><code>x₁…xₙ</code></td><td>Features / predictors / independent vars</td><td>The inputs to the model.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Matrix (Vector) Form</h3>
+  <div class="formula">ŷ = Xβ</div>
+  <p>X is the <strong>design matrix</strong> (n × p+1) — each row is one observation, the first column is all 1s (for β₀). β is a column vector (p+1 × 1). This compact form is what the computer actually computes.</p>
+
+  <h3 class="sub-title">The True Model — Error Term</h3>
+  <div class="formula">y = β₀ + β₁x₁ + ... + βₙxₙ + ε</div>
+  <div class="card card-accent"><div class="card-title">ε (epsilon) — The Error Term</div>
+    <p><strong>What:</strong> The difference between the true y and the deterministic part of the model. It captures everything the model can't explain — noise, measurement error, missing variables.</p>
+    <p><strong>Assumption:</strong> ε ~ N(0, σ²) — normally distributed with mean 0 and constant variance. This is not assumed about the raw data, only the errors.</p>
+    <p><strong>Why it matters:</strong> The shape of ε's distribution determines whether OLS is the best estimator and whether our p-values are valid.</p>
+  </div>
+
+  <h3 class="sub-title">Interpreting Coefficients</h3>
+  <div class="card card-green"><div class="card-title">Example: β₁ = 150 in a house price model</div>
+    <p>"For every additional square foot, the predicted price increases by <strong>$150</strong>, holding all other features constant."</p>
+    <p>The phrase <em>"holding all other features constant"</em> is critical — in multiple regression, each coefficient is a <em>partial effect</em>. It isolates the effect of one feature while the others stay fixed.</p>
+  </div>
+  <div class="card card-warn"><div class="card-title">⚠️ Coefficients are Not Feature Importance if Features are Unscaled</div>
+    <p>A coefficient of 0.01 for income (in dollars) vs 2.5 for rooms doesn't mean rooms matter 250× more. Income is measured in large units. Always <strong>standardise features</strong> before comparing coefficients.</p>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: What's the difference between y and ŷ?</div>
+    <div class="a"><strong>y</strong> is the actual observed value in your dataset. <strong>ŷ</strong> is the model's prediction. The difference <strong>y − ŷ</strong> is the <em>residual</em>. The model optimises β to make residuals as small as possible. The error term ε in the true model is the population-level equivalent of the sample residual.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S3: OLS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2 class="sec-title">Ordinary Least Squares (OLS)</h2>
+  </div>
+
+  <h3 class="sub-title">The Cost Function</h3>
+  <p>OLS finds β by minimising the <strong>Mean Squared Error</strong> — the average squared difference between actual and predicted values:</p>
+  <div class="formula">MSE(β) = (1/n) Σᵢ (yᵢ − ŷᵢ)² = (1/n) ||y − Xβ||²</div>
+
+  <div class="card card-warn"><div class="card-title">Why square the errors — not just sum them?</div>
+    <ul>
+      <li>Raw errors (y − ŷ) can be positive or negative. A model wildly off but symmetric would show zero total error — meaningless.</li>
+      <li>Squaring makes all errors positive, so they can't cancel.</li>
+      <li>Squaring penalises <em>large errors more</em> than small ones — good behaviour for most tasks.</li>
+      <li>The squared function is differentiable everywhere — critical for calculus-based optimisation.</li>
+    </ul>
+  </div>
+
+  <div class="chart-wrap">
+    <svg width="520" height="260" viewBox="0 0 520 260">
+      <text x="260" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">MSE Cost Function vs. β₁ — Convex Bowl Shape</text>
+      <line x1="50" y1="235" x2="490" y2="235" stroke="#252a38" stroke-width="1.5"/>
+      <line x1="50" y1="40"  x2="50"  y2="235" stroke="#252a38" stroke-width="1.5"/>
+      <text x="270" y="255" fill="#8892a4" font-size="12" text-anchor="middle">β₁ (coefficient value)</text>
+      <text x="16" y="138" fill="#8892a4" font-size="12" text-anchor="middle" transform="rotate(-90,16,138)">MSE Cost</text>
+      <path d="M52,232 C80,222 130,188 180,158 C210,136 240,106 270,46 C300,106 330,136 360,158 C410,188 460,222 488,232"
+            fill="none" stroke="#4f9eff" stroke-width="2.5"/>
+      <circle cx="270" cy="46" r="5" fill="#f97316"/>
+      <line x1="270" y1="46" x2="270" y2="235" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="282" y="60" fill="#f97316" font-size="11">Global Minimum</text>
+      <text x="282" y="73" fill="#f97316" font-size="11">(optimal β₁)</text>
+      <text x="120" y="172" fill="#fbbf24" font-size="11">← gradient</text>
+      <text x="355" y="172" fill="#fbbf24" font-size="11">gradient →</text>
+      <text x="270" y="200" fill="#6b7280" font-size="11" text-anchor="middle">One unique global minimum — no local minima!</text>
+    </svg>
+    <p class="chart-caption">Figure 3.1 — MSE is convex (bowl-shaped). Gradient descent always reaches the global minimum. No local minima exist for linear regression.</p>
+  </div>
+
+  <h3 class="sub-title">The Normal Equation — Closed-Form Solution</h3>
+  <p>By setting the derivative of MSE with respect to β to zero and solving, we get an exact analytical answer:</p>
+  <div class="formula">β = (XᵀX)⁻¹ Xᵀy</div>
+
+  <h4 class="mini-title">Derivation (Step-by-Step)</h4>
+  <ol class="step-list">
+    <li>Write cost: <code>J = (1/n)(y − Xβ)ᵀ(y − Xβ)</code></li>
+    <li>Expand: <code>J = (1/n)(yᵀy − 2βᵀXᵀy + βᵀXᵀXβ)</code></li>
+    <li>Differentiate w.r.t. β: <code>∂J/∂β = (1/n)(−2Xᵀy + 2XᵀXβ)</code></li>
+    <li>Set to zero: <code>−2Xᵀy + 2XᵀXβ = 0</code></li>
+    <li>Rearrange: <code>XᵀXβ = Xᵀy</code> (the "normal equations")</li>
+    <li>Solve: <code>β = (XᵀX)⁻¹Xᵀy</code> ✓</li>
+  </ol>
+
+  <h3 class="sub-title">Pros &amp; Cons — Normal Equation / OLS</h3>
+  <div class="pc-grid">
+    <div class="pc-card pros">
+      <h4>✅ Pros</h4>
+      <ul>
+        <li>Exact solution in <strong>one shot</strong> — no iterations, no learning rate to tune</li>
+        <li><strong>Deterministic</strong> — same answer every run, no randomness</li>
+        <li>Works well for small datasets (n large, p small)</li>
+        <li>Gives optimal β directly — no convergence criterion needed</li>
+      </ul>
+    </div>
+    <div class="pc-card cons">
+      <h4>❌ Cons</h4>
+      <ul>
+        <li><strong>O(p³)</strong> — matrix inversion scales cubically with features. 10k features is very slow.</li>
+        <li><strong>Fails if XᵀX is singular</strong> — happens with perfect multicollinearity or p &gt; n</li>
+        <li><strong>Memory intensive</strong> — must hold XᵀX (p×p matrix) in RAM</li>
+        <li>Not suitable for online/streaming learning (gradient descent can update incrementally)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card-warn"><div class="card-title">⚠️ sklearn uses SVD, not direct matrix inversion</div>
+    <p>sklearn's <code>LinearRegression</code> uses <strong>Singular Value Decomposition (SVD)</strong> via <code>numpy.linalg.lstsq</code>, not the explicit (XᵀX)⁻¹ formula. Direct inversion is numerically unstable — small floating-point errors can explode. SVD computes the pseudoinverse and handles near-singular matrices gracefully. Result is mathematically equivalent but numerically safe.</p>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: What is the Ridge closed-form solution, and why does it always work even with multicollinearity?</div>
+    <div class="a">Ridge modifies the Normal Equation: <strong>β = (XᵀX + λI)⁻¹Xᵀy</strong>. Adding λI to the diagonal ensures the matrix is always invertible (positive definite) even when XᵀX would be singular. This is both the mathematical and geometric explanation for why Ridge handles multicollinearity elegantly.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S4: ASSUMPTIONS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2 class="sec-title">The LINE-MO Assumptions</h2>
+  </div>
+  <p>Linear regression has 6 assumptions for the model to be statistically valid. Use the mnemonic <span class="hl">LINE-MO</span>.</p>
+
+  <div class="assumption-grid">
+    <div class="assumption-card"><div class="name">L — Linearity</div><p>The mean of y is a linear function of X.</p></div>
+    <div class="assumption-card"><div class="name">I — Independence</div><p>Observations are independent — residuals are not correlated across data points.</p></div>
+    <div class="assumption-card"><div class="name">N — Normality of Residuals</div><p>The errors ε follow a normal distribution. Needed for valid p-values &amp; CIs.</p></div>
+    <div class="assumption-card"><div class="name">E — Equal Variance (Homoscedasticity)</div><p>Residual variance is constant across all levels of X.</p></div>
+    <div class="assumption-card"><div class="name">M — No Multicollinearity</div><p>Predictors are not highly correlated with each other.</p></div>
+    <div class="assumption-card"><div class="name">O — No Outliers / Leverage</div><p>No extreme points that disproportionately influence the fitted line.</p></div>
+  </div>
+
+  <!-- LINEARITY -->
+  <h3 class="sub-title">L — Linearity</h3>
+  <p><strong>What:</strong> E[y|X] = Xβ. The true relationship between X and y is linear.</p>
+  <p><strong>How to detect:</strong> Residuals vs. Fitted plot — a curved or systematic pattern means linearity is violated.</p>
+  <div class="chart-wrap">
+    <svg width="520" height="190" viewBox="0 0 520 190">
+      <text x="130" y="20" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">✅ Linear — Random residuals</text>
+      <text x="390" y="20" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">❌ Non-Linear — U-shape pattern</text>
+      <line x1="30" y1="100" x2="235" y2="100" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="35"  x2="30"  y2="165" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="100" x2="235" y2="100" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="55"  cy="88"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="75"  cy="116" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="95"  cy="93"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="115" cy="110" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="135" cy="90"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="155" cy="112" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="175" cy="87"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="195" cy="114" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="215" cy="96"  r="3" fill="#4f9eff" opacity=".8"/>
+      <text x="132" y="182" fill="#10b981" font-size="9" text-anchor="middle">Good — add more data or accept</text>
+      <line x1="290" y1="100" x2="495" y2="100" stroke="#252a38" stroke-width="1"/>
+      <line x1="290" y1="35"  x2="290" y2="165" stroke="#252a38" stroke-width="1"/>
+      <line x1="290" y1="100" x2="495" y2="100" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="310" cy="65"  r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="330" cy="78"  r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="355" cy="98"  r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="375" cy="112" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="395" cy="118" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="415" cy="106" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="435" cy="86"  r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="455" cy="64"  r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="475" cy="52"  r="3" fill="#f87171" opacity=".8"/>
+      <path d="M310,65 Q395,130 475,52" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="392" y="182" fill="#f87171" font-size="9" text-anchor="middle">Violation — add polynomial features</text>
+    </svg>
+    <p class="chart-caption">Figure 4.1 — Residuals vs. Fitted plots. Left: linearity holds. Right: U-shape signals a non-linear relationship.</p>
+  </div>
+  <p><strong>Remedy:</strong> Add polynomial features (x², x³), apply log/sqrt transform to X or y, or use a non-linear model.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When it holds</h4><ul><li>OLS is theoretically optimal (BLUE)</li><li>Coefficients are easily interpretable</li><li>Extrapolation is reasonable</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When it's violated</h4><ul><li>Predictions are systematically biased</li><li>Residuals show patterns — visible in diagnostics</li><li>Must add polynomial features or switch models</li></ul></div>
+  </div>
+
+  <!-- EQUAL VARIANCE -->
+  <h3 class="sub-title">E — Equal Variance (Homoscedasticity)</h3>
+  <p><strong>What:</strong> Var(ε|X) = σ² — the variance of residuals is constant across all X values.</p>
+  <p><strong>How to detect:</strong> Residuals vs. Fitted plot (fan/funnel shape). Scale-Location plot. Breusch-Pagan test.</p>
+  <div class="chart-wrap">
+    <svg width="520" height="185" viewBox="0 0 520 185">
+      <text x="130" y="18" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">✅ Homoscedastic</text>
+      <text x="390" y="18" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">❌ Heteroscedastic (fan-out)</text>
+      <line x1="30" y1="95" x2="235" y2="95" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="30" x2="30" y2="160" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="95" x2="235" y2="95" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="55"  cy="78"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="75"  cy="115" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="95"  cy="80"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="115" cy="112" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="135" cy="79"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="155" cy="113" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="175" cy="80"  r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="200" cy="113" r="3" fill="#4f9eff" opacity=".8"/>
+      <circle cx="220" cy="78"  r="3" fill="#4f9eff" opacity=".8"/>
+      <line x1="290" y1="95" x2="495" y2="95" stroke="#252a38" stroke-width="1"/>
+      <line x1="290" y1="30" x2="290" y2="160" stroke="#252a38" stroke-width="1"/>
+      <line x1="290" y1="95" x2="495" y2="95" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="305" cy="93" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="325" cy="91" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="345" cy="82" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="370" cy="72" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="390" cy="125" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="415" cy="60" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="435" cy="145" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="455" cy="50" r="3" fill="#f87171" opacity=".8"/>
+      <circle cx="475" cy="152" r="3" fill="#f87171" opacity=".8"/>
+      <line x1="305" y1="93" x2="480" y2="48"  stroke="#f97316" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/>
+      <line x1="305" y1="97" x2="480" y2="155" stroke="#f97316" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/>
+      <text x="390" y="178" fill="#f87171" font-size="9" text-anchor="middle">Fan-out → heteroscedastic</text>
+    </svg>
+    <p class="chart-caption">Figure 4.2 — Left: equal spread of residuals (good). Right: spread increases with fitted value (heteroscedastic).</p>
+  </div>
+  <p><strong>Consequences if violated:</strong> OLS estimates remain <em>unbiased</em> but are no longer <em>efficient</em>. Standard errors are wrong → p-values and confidence intervals are unreliable.</p>
+  <p><strong>Remedies:</strong> Log-transform y (most common), use Weighted Least Squares (WLS), use heteroscedasticity-consistent (HC3) standard errors.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When it holds</h4><ul><li>OLS is efficient (BLUE)</li><li>Standard errors, p-values, CIs are valid</li><li>Residual plots are clean</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When violated (heteroscedasticity)</h4><ul><li>Standard errors are biased → bad p-values</li><li>Confidence intervals are too narrow or too wide</li><li>OLS is no longer the most efficient estimator</li></ul></div>
+  </div>
+
+  <!-- MULTICOLLINEARITY -->
+  <h3 class="sub-title">M — No Multicollinearity</h3>
+  <p><strong>What:</strong> Predictor variables should not be highly correlated with each other.</p>
+  <p><strong>Analogy:</strong> Imagine predicting salary from both height (cm) and height (inches). They're the same thing — the model has infinite ways to split the weight between them, producing wildly unstable coefficients.</p>
+  <p><strong>How to detect:</strong> <strong>Variance Inflation Factor (VIF)</strong> — VIF &gt; 5: warning; VIF &gt; 10: severe.</p>
+  <div class="formula">VIF(βⱼ) = 1 / (1 − R²ⱼ)  where R²ⱼ = R² from regressing xⱼ on all other features</div>
+  <p><strong>Remedies:</strong> Remove one of the correlated features, combine them (e.g., average), use PCA, or use Ridge regression (which handles multicollinearity by design).</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When absent (low VIF)</h4><ul><li>Coefficients are stable and interpretable</li><li>Standard errors are small</li><li>Can meaningfully compare feature importance</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When present (high VIF)</h4><ul><li>Coefficient estimates are unstable — flip sign with small data changes</li><li>Standard errors inflate → wide confidence intervals</li><li>Coefficients become uninterpretable individually</li><li>Normal Equation may become numerically singular</li></ul></div>
+  </div>
+
+  <!-- INDEPENDENCE -->
+  <h3 class="sub-title">I — Independence of Errors</h3>
+  <p><strong>What:</strong> The error for observation i tells you nothing about the error for observation j. Cov(εᵢ, εⱼ) = 0 for i ≠ j.</p>
+  <p><strong>Common violation:</strong> Time-series data — yesterday's error predicts today's (autocorrelation). Also: grouped data (multiple readings from same patient).</p>
+  <p><strong>How to detect:</strong> Durbin-Watson test (value ≈ 2 = no autocorrelation; near 0 = positive; near 4 = negative). ACF/PACF plots of residuals.</p>
+  <p><strong>Remedy:</strong> Add lag features, use ARIMA/time-series models, use GLS (Generalized Least Squares), cluster-robust standard errors.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When it holds</h4><ul><li>Standard errors are correctly estimated</li><li>No systematic patterns in residuals over time or groups</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When violated (autocorrelation)</h4><ul><li>Standard errors are underestimated → inflated t-stats and false significance</li><li>Predictions are poor for sequential/grouped data</li><li>Model is systematically wrong in structured ways</li></ul></div>
+  </div>
+
+  <!-- NORMALITY -->
+  <h3 class="sub-title">N — Normality of Residuals</h3>
+  <p><strong>What:</strong> The residuals (not y, not X) should be approximately normally distributed.</p>
+  <div class="callout"><div class="icon">⚠️</div><div><strong>Critical misconception:</strong> This assumption is about the <em>residuals</em>, NOT the raw data. Your input features can follow any distribution. This also matters mainly for <em>inference</em> (p-values, CIs) — not for prediction accuracy. With large samples (n &gt; 30+), the Central Limit Theorem makes OLS robust to non-normality.</div></div>
+  <p><strong>How to detect:</strong> Q-Q plot (points should fall on diagonal). Shapiro-Wilk test (small samples), Kolmogorov-Smirnov test (large).</p>
+  <p><strong>Remedy:</strong> Log/sqrt transform y, remove outliers, use robust regression.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When it holds</h4><ul><li>t-tests and F-tests on coefficients are exactly valid</li><li>Confidence intervals are correctly sized</li><li>Small-sample inference is reliable</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When violated</h4><ul><li>p-values and CIs may be inaccurate (especially for small n)</li><li>For large n: CLT saves you — predictions still fine</li><li>For small n: bootstrap confidence intervals as alternative</li></ul></div>
+  </div>
+
+  <!-- OUTLIERS -->
+  <h3 class="sub-title">O — No Extreme Outliers / High-Leverage Points</h3>
+  <p><strong>Outlier:</strong> Unusual y value — far from the regression line (high residual).</p>
+  <p><strong>High-leverage point:</strong> Unusual X value — far from the centroid of X-space. Can "pull" the regression line toward it.</p>
+  <p><strong>Influential point:</strong> High leverage + high residual = changes coefficients dramatically when removed (measured by Cook's Distance).</p>
+  <p><strong>Remedy:</strong> Investigate (data entry error? genuine extreme case?), remove if erroneous, transform, or use Huber/RANSAC regression.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When outliers are absent</h4><ul><li>Coefficients represent the typical relationship</li><li>MSE is a faithful measure of model error</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When influential outliers are present</h4><ul><li>A single point can dominate the entire regression line</li><li>Coefficients may be completely distorted</li><li>RMSE is artificially inflated</li></ul></div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Tricky Interview: "Does linear regression assume the data is normally distributed?"</div>
+    <div class="a"><strong>No — very common misconception!</strong> Linear regression assumes the <em>residuals</em> (errors) are normally distributed, not the raw X or y data. Your input features can be skewed, uniform, or anything. Even the residual normality assumption is mainly needed for valid inference (p-values), not for predictions. For large enough samples, the CLT makes this assumption less critical.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S5: METRICS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2 class="sec-title">Evaluation Metrics</h2>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card"><div class="symbol">MSE</div><div class="name">Mean Squared Error</div><div class="range">0 = perfect, lower better</div></div>
+    <div class="metric-card"><div class="symbol">RMSE</div><div class="name">Root Mean Squared Error</div><div class="range">Same units as y</div></div>
+    <div class="metric-card"><div class="symbol">MAE</div><div class="name">Mean Absolute Error</div><div class="range">Robust to outliers</div></div>
+    <div class="metric-card"><div class="symbol">R²</div><div class="name">Coefficient of Determination</div><div class="range">−∞ to 1 (higher better)</div></div>
+    <div class="metric-card"><div class="symbol">Adj R²</div><div class="name">Adjusted R²</div><div class="range">Penalises useless features</div></div>
+    <div class="metric-card"><div class="symbol">MAPE</div><div class="name">Mean Abs. % Error</div><div class="range">Percentage — avoid if y≈0</div></div>
+  </div>
+
+  <h3 class="sub-title">MSE — Mean Squared Error</h3>
+  <div class="formula">MSE = (1/n) Σᵢ (yᵢ − ŷᵢ)²</div>
+  <p><strong>Intuition:</strong> Average of squared prediction errors. Squaring both makes all errors positive and heavily penalises large errors.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li>Differentiable everywhere — mathematically clean for gradient-based optimisation</li><li>Penalises large errors more — good when big mistakes are very costly</li><li>Convex — unique global minimum</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li>Units are squared (e.g., dollars² for prices) — not directly interpretable</li><li>Very sensitive to outliers — one extreme error dominates the score</li><li>Two models with very different error distributions can have the same MSE</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">RMSE — Root Mean Squared Error</h3>
+  <div class="formula">RMSE = √MSE = √[ (1/n) Σ (yᵢ − ŷᵢ)² ]</div>
+  <p><strong>Intuition:</strong> Take the square root to get back to original units. RMSE = 25,000 on house prices → "on average, predictions are off by ~$25,000."</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li>Same units as y — directly interpretable</li><li>Still penalises large errors (from squared term)</li><li>Most widely used metric in regression competitions (Kaggle)</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li>Still sensitive to outliers (inherited from MSE)</li><li>Not scale-invariant — can't compare RMSE across different target scales</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">MAE — Mean Absolute Error</h3>
+  <div class="formula">MAE = (1/n) Σ |yᵢ − ŷᵢ|</div>
+  <p><strong>Intuition:</strong> Average of absolute errors. Treats all errors equally — a $1,000 error is 10× worse than a $100 error (not 100× as in MSE).</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li><strong>Robust to outliers</strong> — extreme errors don't dominate</li><li>Same units as y — easy to explain to non-technical stakeholders</li><li>More interpretable average error than RMSE</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li>Not differentiable at 0 — subgradient needed; slightly harder to optimise</li><li>Treats all errors equally — may underweight serious large errors</li><li>Less mathematically clean than MSE for theoretical derivations</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">R² — Coefficient of Determination</h3>
+  <div class="formula">R² = 1 − SS_res / SS_tot = 1 − Σ(yᵢ−ŷᵢ)² / Σ(yᵢ−ȳ)²</div>
+
+  <div class="chart-wrap">
+    <svg width="520" height="195" viewBox="0 0 520 195">
+      <text x="260" y="18" fill="#e2e8f0" font-size="12" font-weight="700" text-anchor="middle">R² Intuition: How Much Variance Does the Model Explain?</text>
+      <text x="130" y="38" fill="#8892a4" font-size="10" text-anchor="middle">Baseline: predict ȳ for everything</text>
+      <line x1="30" y1="168" x2="235" y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="42"  x2="30"  y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="30" y1="118" x2="235" y2="118" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="55"  cy="153" r="3" fill="#4f9eff"/>
+      <circle cx="85"  cy="138" r="3" fill="#4f9eff"/>
+      <circle cx="115" cy="98"  r="3" fill="#4f9eff"/>
+      <circle cx="145" cy="82"  r="3" fill="#4f9eff"/>
+      <circle cx="175" cy="68"  r="3" fill="#4f9eff"/>
+      <circle cx="205" cy="53"  r="3" fill="#4f9eff"/>
+      <line x1="55"  y1="118" x2="55"  y2="153" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <line x1="85"  y1="118" x2="85"  y2="138" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <line x1="115" y1="98"  x2="115" y2="118" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <line x1="145" y1="82"  x2="145" y2="118" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <line x1="175" y1="68"  x2="175" y2="118" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <line x1="205" y1="53"  x2="205" y2="118" stroke="#fbbf24" stroke-width="1.5" opacity=".7"/>
+      <text x="130" y="186" fill="#fbbf24" font-size="9" text-anchor="middle">SS_tot (total variance to explain)</text>
+      <text x="390" y="38" fill="#8892a4" font-size="10" text-anchor="middle">Model: fitted line</text>
+      <line x1="290" y1="168" x2="495" y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="290" y1="42"  x2="290" y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="295" y1="160" x2="495" y2="50" stroke="#f97316" stroke-width="2"/>
+      <circle cx="315" cy="153" r="3" fill="#4f9eff"/>
+      <circle cx="345" cy="138" r="3" fill="#4f9eff"/>
+      <circle cx="375" cy="98"  r="3" fill="#4f9eff"/>
+      <circle cx="405" cy="82"  r="3" fill="#4f9eff"/>
+      <circle cx="435" cy="68"  r="3" fill="#4f9eff"/>
+      <circle cx="465" cy="53"  r="3" fill="#4f9eff"/>
+      <line x1="315" y1="153" x2="315" y2="150" stroke="#10b981" stroke-width="2"/>
+      <line x1="345" y1="138" x2="345" y2="136" stroke="#10b981" stroke-width="2"/>
+      <line x1="375" y1="98"  x2="375" y2="102" stroke="#10b981" stroke-width="2"/>
+      <line x1="405" y1="82"  x2="405" y2="86"  stroke="#10b981" stroke-width="2"/>
+      <text x="390" y="186" fill="#10b981" font-size="9" text-anchor="middle">SS_res (unexplained variance — tiny!)</text>
+    </svg>
+    <p class="chart-caption">Figure 5.1 — R² = 1 − SS_res/SS_tot. Left: predicting ȳ (baseline). Right: model reduces errors dramatically.</p>
+  </div>
+
+  <div class="table-wrap"><table>
+    <tr><th>R² Value</th><th>Interpretation</th><th>Context</th></tr>
+    <tr><td>&lt; 0</td><td class="bad">Worse than predicting the mean!</td><td>Model is broken or evaluated on wrong data</td></tr>
+    <tr><td>0.0</td><td class="bad">No better than baseline (ȳ)</td><td>Features explain nothing</td></tr>
+    <tr><td>0.3–0.5</td><td class="neu">Moderate</td><td>Social science, economics</td></tr>
+    <tr><td>0.7–0.9</td><td class="good">Good</td><td>Typical ML regression task</td></tr>
+    <tr><td>0.95+</td><td class="good">Excellent</td><td>Engineering, physics</td></tr>
+    <tr><td>1.0</td><td class="bad">Perfect — highly suspicious</td><td>Likely data leakage or degenerate setup</td></tr>
+  </table></div>
+
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of R²</h4><ul><li>Scale-independent — 0–1 range comparable across datasets</li><li>Intuitive: "the model explains X% of the variance in y"</li><li>Widely understood — good for reporting to stakeholders</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of R²</h4><ul><li>Always increases when you add features — even useless ones</li><li>Says nothing about assumption violations or coefficient correctness</li><li>Sensitive to scale — a high R² on log(y) doesn't directly translate to raw y</li><li>Can be negative on test sets if model is worse than the mean predictor</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">Adjusted R² — The Honest R²</h3>
+  <div class="formula">Adj R² = 1 − (1 − R²) × (n − 1) / (n − p − 1)</div>
+  <p><strong>Why it exists:</strong> R² mechanically increases when you add any feature (even random noise). Adjusted R² penalises for extra features — it only improves if the new feature genuinely helps beyond what random chance would give.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li>Penalises model complexity — prevents feature inflation</li><li>Better for comparing models with different numbers of features</li><li>Decreases when useless features are added</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li>Still doesn't check assumption validity</li><li>Doesn't measure predictive accuracy the way CV does</li><li>Can still be gamed if you tune heavily on training data</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">MAPE — Mean Absolute Percentage Error</h3>
+  <div class="formula">MAPE = (100/n) Σ |yᵢ − ŷᵢ| / |yᵢ|</div>
+  <p><strong>Intuition:</strong> "On average, my predictions are off by X%." Immediately understandable by business stakeholders without knowing the units.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li>Percentage-based — easily communicated to non-technical teams</li><li>Scale-independent — compare across different products/targets</li><li>Intuitive: MAPE = 5% is immediately meaningful</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li><strong>Undefined when yᵢ = 0</strong> (division by zero)</li><li>Asymmetric — over-predictions and under-predictions are penalised differently</li><li>Heavily penalises underestimates vs. overestimates when y is small</li><li>Not suitable for targets near zero</li></ul></div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Tricky Interview: Can R² be negative? When?</div>
+    <div class="a">Yes. R² = 1 − SS_res/SS_tot. If SS_res &gt; SS_tot — i.e., the model's errors are larger than just predicting the mean — R² goes negative. This happens when: (1) evaluating on a test set after severe overfitting, (2) forcing fit_intercept=False on data that doesn't pass through the origin, or (3) a preprocessing/scaling mistake on the test set. R² &lt; 0 is a red flag — the model is actively harmful compared to always predicting ȳ.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: When would you choose MAE over RMSE?</div>
+    <div class="a">Choose MAE when: (1) your target has genuine outliers that aren't data errors and you don't want them to dominate your metric (e.g., predicting delivery time where occasional extreme delays are real but rare), (2) your business cares equally about all errors regardless of size, (3) you need to explain model performance to non-technical stakeholders in simple terms. Choose RMSE when large errors are disproportionately more costly (e.g., structural engineering, financial risk).</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S6: GRADIENT DESCENT -->
+<!-- ════════════════════════════════════════ -->
+<section id="s6">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2 class="sec-title">Gradient Descent</h2>
+  </div>
+
+  <h3 class="sub-title">Why Gradient Descent?</h3>
+  <p>When the dataset has millions of rows or thousands of features, the Normal Equation's O(p³) matrix inversion becomes impractical. Gradient descent finds the minimum <em>iteratively</em> instead of analytically.</p>
+  <p><strong>Analogy:</strong> You're blindfolded on a hilly landscape trying to find the valley. At each step you feel which direction is downhill (the gradient) and take one step in that direction. Repeat until you can't go further downhill.</p>
+
+  <div class="formula">β_new := β_old − α × ∂MSE/∂β</div>
+  <div class="formula">∂MSE/∂β = −(2/n) Xᵀ(y − Xβ)</div>
+
+  <ol class="step-list">
+    <li>Initialise β (all zeros, or random small values)</li>
+    <li>Compute predictions: ŷ = Xβ</li>
+    <li>Compute residuals: e = y − ŷ</li>
+    <li>Compute gradient: ∇ = −(2/n) Xᵀe</li>
+    <li>Update coefficients: β ← β − α × ∇</li>
+    <li>Repeat until ‖∇‖ &lt; ε or max iterations reached</li>
+  </ol>
+
+  <div class="chart-wrap">
+    <svg width="520" height="250" viewBox="0 0 520 250">
+      <text x="260" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">Effect of Learning Rate α on Convergence</text>
+      <line x1="50" y1="220" x2="490" y2="220" stroke="#252a38" stroke-width="1.5"/>
+      <line x1="50" y1="35"  x2="50"  y2="220" stroke="#252a38" stroke-width="1.5"/>
+      <text x="270" y="240" fill="#8892a4" font-size="12" text-anchor="middle">Iterations →</text>
+      <text x="16" y="128" fill="#8892a4" font-size="12" text-anchor="middle" transform="rotate(-90,16,128)">Cost (MSE)</text>
+      <path d="M58,198 C85,185 115,162 145,140 C175,120 198,105 228,92 C258,80 295,72 335,68 C375,65 415,64 480,63"
+            fill="none" stroke="#10b981" stroke-width="2.5"/>
+      <path d="M58,198 C68,38 78,200 98,50 C113,196 128,58 158,188 C178,76 198,180 228,86 C258,174 295,92 335,145 C368,118 418,130 480,125"
+            fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5,3"/>
+      <path d="M58,198 C88,195 118,191 158,188 C198,185 248,181 298,177 C358,173 418,170 480,168"
+            fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,3"/>
+      <line x1="68" y1="38" x2="98" y2="38" stroke="#10b981" stroke-width="2.5"/>
+      <text x="106" y="42" fill="#10b981" font-size="11">Optimal α → smooth convergence</text>
+      <line x1="68" y1="55" x2="98" y2="55" stroke="#f87171" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="106" y="59" fill="#f87171" font-size="11">Too high α → oscillates / diverges</text>
+      <line x1="68" y1="72" x2="98" y2="72" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,3"/>
+      <text x="106" y="76" fill="#fbbf24" font-size="11">Too low α → extremely slow</text>
+    </svg>
+    <p class="chart-caption">Figure 6.1 — Learning rate α is the most critical hyperparameter. Too high → overshoots. Too low → wastes time. Optimal → smooth exponential decay.</p>
+  </div>
+
+  <h3 class="sub-title">Types of Gradient Descent</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Type</th><th>Batch size</th><th>Pros</th><th>Cons</th><th>When to use</th></tr>
+    <tr><td><strong>Batch GD</strong></td><td>All n</td><td class="good">Stable, exact gradient, smooth convergence</td><td class="bad">Slow per iter, can't fit huge data in RAM</td><td>Small datasets, when stability matters</td></tr>
+    <tr><td><strong>Stochastic GD (SGD)</strong></td><td>1</td><td class="good">Very fast updates, can escape local minima</td><td class="bad">Noisy, oscillates, needs LR schedule</td><td>Huge datasets, online learning</td></tr>
+    <tr><td><strong>Mini-batch GD</strong></td><td>k (16–512)</td><td class="good">Best of both, GPU-parallelisable</td><td class="neu">Extra hyperparameter (batch size)</td><td>Standard choice for deep learning / large data</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Pros &amp; Cons — Gradient Descent for Linear Regression</h3>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros</h4><ul><li>Scales to millions of samples and thousands of features</li><li>Can use mini-batches — memory efficient, no need to load all data at once</li><li>Foundation for deep learning — same algorithm used in neural nets</li><li>Can be extended to non-convex losses easily</li><li>Online learning capable — update model as new data arrives</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons</h4><ul><li>Requires choosing learning rate α — wrong choice = slow or divergence</li><li>Iterative — no single closed-form answer; needs convergence criterion</li><li>Sensitive to feature scaling — must standardise features first</li><li>Not needed for linear regression with small p — Normal Equation is faster and exact</li><li>May oscillate around minimum without a decaying LR schedule (SGD)</li></ul></div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: Does gradient descent always find the global minimum for linear regression?</div>
+    <div class="a">Yes — because MSE for linear regression is <strong>strictly convex</strong> (a perfect bowl). There are no local minima, no saddle points to get stuck in. Any run of gradient descent with a suitable learning rate will reach the global minimum. This contrasts sharply with neural networks, which are non-convex. Ridge regression is also convex. Lasso has a non-differentiable point at zero but is still convex — coordinate descent handles it.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S7: REGULARIZATION -->
+<!-- ════════════════════════════════════════ -->
+<section id="s7">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <h2 class="sec-title">Regularization: Ridge, Lasso &amp; ElasticNet</h2>
+  </div>
+
+  <h3 class="sub-title">The Problem: Overfitting &amp; Large Coefficients</h3>
+  <p>When a model has many features, OLS can produce very large coefficients to fit training noise. This causes poor generalisation to new data (overfitting). Regularisation adds a <strong>penalty on coefficient size</strong> to the cost function, constraining how large they can get.</p>
+
+  <div class="chart-wrap">
+    <svg width="500" height="190" viewBox="0 0 500 190">
+      <text x="125" y="18" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">✅ Good Fit — generalises</text>
+      <text x="375" y="18" fill="#e2e8f0" font-size="11" font-weight="700" text-anchor="middle">❌ Overfit — memorised noise</text>
+      <line x1="20" y1="168" x2="235" y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="20" y1="28" x2="20" y2="168" stroke="#252a38" stroke-width="1"/>
+      <circle cx="48"  cy="138" r="4" fill="#4f9eff"/>
+      <circle cx="78"  cy="118" r="4" fill="#4f9eff"/>
+      <circle cx="108" cy="103" r="4" fill="#4f9eff"/>
+      <circle cx="138" cy="85"  r="4" fill="#4f9eff"/>
+      <circle cx="168" cy="70"  r="4" fill="#4f9eff"/>
+      <circle cx="198" cy="58"  r="4" fill="#4f9eff"/>
+      <line x1="28" y1="146" x2="218" y2="52" stroke="#10b981" stroke-width="2.5"/>
+      <line x1="265" y1="168" x2="480" y2="168" stroke="#252a38" stroke-width="1"/>
+      <line x1="265" y1="28" x2="265" y2="168" stroke="#252a38" stroke-width="1"/>
+      <circle cx="293" cy="138" r="4" fill="#4f9eff"/>
+      <circle cx="323" cy="118" r="4" fill="#4f9eff"/>
+      <circle cx="353" cy="103" r="4" fill="#4f9eff"/>
+      <circle cx="383" cy="85"  r="4" fill="#4f9eff"/>
+      <circle cx="413" cy="70"  r="4" fill="#4f9eff"/>
+      <circle cx="443" cy="58"  r="4" fill="#4f9eff"/>
+      <path d="M278,150 C293,138 310,155 323,118 C335,92 350,135 353,103 C363,76 378,115 383,85 C392,62 407,100 413,70 C423,50 433,78 443,58 C452,44 460,57 472,48"
+            fill="none" stroke="#f87171" stroke-width="2.5"/>
+      <text x="125" y="185" fill="#10b981" font-size="9" text-anchor="middle">Smooth — will work on new data</text>
+      <text x="375" y="185" fill="#f87171" font-size="9" text-anchor="middle">Wiggly — will fail on new data</text>
+    </svg>
+    <p class="chart-caption">Figure 7.1 — The regularised model (green line, left) generalises. The overfit model (red curve, right) passes through every point but fails on unseen data.</p>
+  </div>
+
+  <!-- Ridge -->
+  <h3 class="sub-title">Ridge Regression (L2 Regularisation)</h3>
+  <div class="formula">Cost = MSE + λ Σⱼ βⱼ²</div>
+  <p><strong>What it does:</strong> Adds the sum of <em>squared</em> coefficients as a penalty. Shrinks all coefficients toward zero but <strong>never exactly to zero</strong>.</p>
+  <p><strong>Closed-form solution:</strong> β = (XᵀX + λI)⁻¹Xᵀy — always invertible, even with multicollinearity.</p>
+  <p><strong>λ (called <code>alpha</code> in sklearn):</strong> λ=0 → plain OLS. λ→∞ → all β→0.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of Ridge</h4><ul><li>Handles <strong>multicollinearity</strong> — distributes weight across correlated features</li><li>Always has a unique, stable solution (XᵀX + λI always invertible)</li><li>Closed-form — still very fast to compute</li><li>Keeps all features — good when you believe all features matter</li><li>Lower variance than OLS when features are correlated</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of Ridge</h4><ul><li><strong>No feature selection</strong> — all coefficients stay non-zero (just smaller)</li><li>Coefficients are biased (introduces bias to reduce variance)</li><li>λ must be tuned via cross-validation</li><li>Less interpretable than OLS when λ is large (coefficients are shrunk)</li></ul></div>
+  </div>
+
+  <!-- L1 vs L2 geometric -->
+  <div class="chart-wrap">
+    <svg width="520" height="260" viewBox="0 0 520 260">
+      <text x="260" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">Geometric Intuition: Why Lasso Creates Sparsity</text>
+      <text x="130" y="44" fill="#4f9eff" font-size="11" font-weight="700" text-anchor="middle">Ridge — L2 Circle (no corners)</text>
+      <ellipse cx="130" cy="155" rx="72" ry="50" fill="none" stroke="#252a38" stroke-width="1"/>
+      <ellipse cx="130" cy="155" rx="52" ry="35" fill="none" stroke="#252a38" stroke-width="1"/>
+      <ellipse cx="130" cy="155" rx="30" ry="20" fill="none" stroke="#252a38" stroke-width="1"/>
+      <circle cx="130" cy="155" r="46" fill="rgba(79,158,255,.07)" stroke="#4f9eff" stroke-width="2"/>
+      <circle cx="162" cy="132" r="5" fill="#fbbf24"/>
+      <text x="169" y="127" fill="#fbbf24" font-size="9">β* (OLS)</text>
+      <circle cx="144" cy="112" r="5" fill="#10b981"/>
+      <text x="151" y="108" fill="#10b981" font-size="9">β̂ Ridge</text>
+      <text x="151" y="118" fill="#10b981" font-size="8">(on boundary)</text>
+      <line x1="144" y1="112" x2="162" y2="132" stroke="#6b7280" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="60" y1="155" x2="200" y2="155" stroke="#374151" stroke-width="1"/>
+      <line x1="130" y1="90" x2="130" y2="222" stroke="#374151" stroke-width="1"/>
+      <text x="202" y="170" fill="#6b7280" font-size="9">β₁</text>
+      <text x="136" y="92" fill="#6b7280" font-size="9">β₂</text>
+      <text x="130" y="244" fill="#4f9eff" font-size="9" text-anchor="middle">Smooth boundary — hits at non-zero point</text>
+      <text x="390" y="44" fill="#f97316" font-size="11" font-weight="700" text-anchor="middle">Lasso — L1 Diamond (has corners!)</text>
+      <ellipse cx="390" cy="155" rx="72" ry="50" fill="none" stroke="#252a38" stroke-width="1"/>
+      <ellipse cx="390" cy="155" rx="52" ry="35" fill="none" stroke="#252a38" stroke-width="1"/>
+      <ellipse cx="390" cy="155" rx="30" ry="20" fill="none" stroke="#252a38" stroke-width="1"/>
+      <polygon points="390,110 435,155 390,200 345,155" fill="rgba(249,115,22,.07)" stroke="#f97316" stroke-width="2"/>
+      <circle cx="422" cy="132" r="5" fill="#fbbf24"/>
+      <text x="428" y="127" fill="#fbbf24" font-size="9">β* (OLS)</text>
+      <circle cx="435" cy="155" r="5" fill="#10b981"/>
+      <text x="440" y="150" fill="#10b981" font-size="9">β̂ Lasso</text>
+      <text x="440" y="161" fill="#10b981" font-size="8">β₂ = 0 !</text>
+      <line x1="435" y1="155" x2="422" y2="132" stroke="#6b7280" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="325" y1="155" x2="465" y2="155" stroke="#374151" stroke-width="1"/>
+      <line x1="390" y1="90" x2="390" y2="222" stroke="#374151" stroke-width="1"/>
+      <text x="466" y="170" fill="#6b7280" font-size="9">β₁</text>
+      <text x="396" y="92" fill="#6b7280" font-size="9">β₂</text>
+      <text x="390" y="244" fill="#f97316" font-size="9" text-anchor="middle">Corner on axis → β₂ exactly 0 = feature selection!</text>
+    </svg>
+    <p class="chart-caption">Figure 7.2 — The ellipses are MSE contours. Ridge's circular boundary is smooth — the touching point is off the axis. Lasso's diamond has corners exactly on the axes — the MSE ellipse almost always first touches a corner, making that coefficient exactly 0.</p>
+  </div>
+
+  <!-- Lasso -->
+  <h3 class="sub-title">Lasso Regression (L1 Regularisation)</h3>
+  <div class="formula">Cost = MSE + λ Σⱼ |βⱼ|</div>
+  <p><strong>What it does:</strong> Adds the sum of <em>absolute values</em> of coefficients as a penalty. Unlike Ridge, L1 can drive some coefficients to <strong>exactly zero</strong> — performing automatic feature selection.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of Lasso</h4><ul><li><strong>Built-in feature selection</strong> — zero coefficients remove irrelevant features</li><li>Produces <strong>sparse models</strong> — easier to interpret when many features exist</li><li>Good when true model is sparse (only a few features truly matter)</li><li>Helps when you have thousands of features (genomics, text, etc.)</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of Lasso</h4><ul><li><strong>No closed form</strong> — iterative coordinate descent required</li><li>When features are correlated, Lasso arbitrarily picks one and zeros the others — unstable</li><li>Poor at handling groups of correlated predictors</li><li>λ must be tuned; too high → over-sparse (important features zeroed out)</li><li>Slower than Ridge for large datasets</li></ul></div>
+  </div>
+
+  <!-- ElasticNet -->
+  <h3 class="sub-title">ElasticNet (L1 + L2 Combined)</h3>
+  <div class="formula">Cost = MSE + α × [ r × Σ|βⱼ| + (1−r)/2 × Σβⱼ² ]</div>
+  <p>Where <code>alpha</code> is the overall penalty strength and <code>l1_ratio</code> (r) controls the mix: 0 = pure Ridge, 1 = pure Lasso.</p>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of ElasticNet</h4><ul><li><strong>Best of both worlds</strong> — sparsity from L1 + stability from L2</li><li>Handles <strong>groups of correlated features</strong> better than Lasso alone (tends to keep or drop them together)</li><li>More robust than Lasso in high-dimensional settings</li><li>Flexible via l1_ratio tuning</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of ElasticNet</h4><ul><li><strong>Two hyperparameters</strong> to tune (alpha and l1_ratio) — more search space</li><li>No closed form — iterative, slower than Ridge</li><li>Interpretation slightly more complex</li><li>Often overkill — if you know the setting, pick Ridge or Lasso specifically</li></ul></div>
+  </div>
+
+  <div class="table-wrap"><table>
+    <tr><th>Property</th><th>OLS</th><th>Ridge (L2)</th><th>Lasso (L1)</th><th>ElasticNet</th></tr>
+    <tr><td>Penalty</td><td>None</td><td>Σβ²</td><td>Σ|β|</td><td>Both</td></tr>
+    <tr><td>Feature selection</td><td class="bad">No</td><td class="bad">No</td><td class="good">Yes (exact zeros)</td><td class="good">Yes (partial)</td></tr>
+    <tr><td>Handles multicollinearity</td><td class="bad">Poorly</td><td class="good">Yes</td><td class="neu">Partially</td><td class="good">Yes</td></tr>
+    <tr><td>Sparsity</td><td class="bad">No</td><td class="bad">No</td><td class="good">Yes</td><td class="neu">Partial</td></tr>
+    <tr><td>Closed form</td><td class="good">Yes</td><td class="good">Yes</td><td class="bad">No</td><td class="bad">No</td></tr>
+    <tr><td>Hyperparameters</td><td>0</td><td>1 (alpha)</td><td>1 (alpha)</td><td>2 (alpha + l1_ratio)</td></tr>
+    <tr><td>Best when</td><td>p small, no overfit</td><td>Correlated features</td><td>Only a few features matter</td><td>Both problems at once</td></tr>
+  </table></div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Tricky Interview: Why does L1 produce sparsity but L2 doesn't?</div>
+    <div class="a"><strong>Geometric answer:</strong> L1's constraint region is a diamond with corners on the coordinate axes. The MSE ellipse almost always first touches the diamond at a corner (where one β = 0). L2's circular boundary has no corners — the ellipse touches it at a smooth point where all coordinates are non-zero.<br><br><strong>Calculus answer:</strong> L2 penalty derivative = 2βⱼ → shrinks proportionally to current size → approaches zero but never reaches it. L1 penalty derivative = sign(βⱼ) → constant push toward zero regardless of current size → can reach exactly zero.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S8: DIAGNOSTICS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s8">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <h2 class="sec-title">Residual Diagnostics</h2>
+  </div>
+  <p>After fitting, always run these 4 diagnostic plots to validate assumptions.</p>
+
+  <div class="chart-wrap">
+    <svg width="560" height="410" viewBox="0 0 560 410">
+      <text x="280" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">The 4 Essential Diagnostic Plots</text>
+      <!-- 1: Residuals vs Fitted -->
+      <rect x="20" y="35" width="240" height="168" fill="var(--surface2)" rx="6" stroke="var(--border)" stroke-width="1"/>
+      <text x="140" y="52" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">1. Residuals vs. Fitted</text>
+      <line x1="40" y1="123" x2="245" y2="123" stroke="#374151" stroke-width="1"/>
+      <line x1="40" y1="55" x2="40" y2="193" stroke="#374151" stroke-width="1"/>
+      <line x1="40" y1="123" x2="245" y2="123" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="65"  cy="108" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="90"  cy="137" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="110" cy="112" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="135" cy="138" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="155" cy="112" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="175" cy="133" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="200" cy="114" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="220" cy="136" r="3" fill="#10b981" opacity=".8"/>
+      <text x="140" y="185" fill="#10b981" font-size="9" text-anchor="middle">✅ Random scatter → linearity + homoscedasticity OK</text>
+      <text x="34" y="127" fill="#6b7280" font-size="8" text-anchor="end">0</text>
+      <text x="140" y="198" fill="#6b7280" font-size="8" text-anchor="middle">Fitted values →</text>
+      <!-- 2: Q-Q -->
+      <rect x="300" y="35" width="240" height="168" fill="var(--surface2)" rx="6" stroke="var(--border)" stroke-width="1"/>
+      <text x="420" y="52" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">2. Normal Q-Q</text>
+      <line x1="320" y1="193" x2="525" y2="193" stroke="#374151" stroke-width="1"/>
+      <line x1="320" y1="55" x2="320" y2="193" stroke="#374151" stroke-width="1"/>
+      <line x1="325" y1="188" x2="520" y2="60" stroke="#4f9eff" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="340" cy="176" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="362" cy="160" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="382" cy="146" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="402" cy="132" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="422" cy="118" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="442" cy="104" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="462" cy="90"  r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="490" cy="70"  r="3" fill="#10b981" opacity=".8"/>
+      <text x="420" y="208" fill="#10b981" font-size="9" text-anchor="middle">✅ On diagonal → residuals normally distributed</text>
+      <!-- 3: Scale-Location -->
+      <rect x="20" y="225" width="240" height="168" fill="var(--surface2)" rx="6" stroke="var(--border)" stroke-width="1"/>
+      <text x="140" y="242" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">3. Scale-Location (Homoscedasticity)</text>
+      <line x1="40" y1="363" x2="245" y2="363" stroke="#374151" stroke-width="1"/>
+      <line x1="40" y1="248" x2="40" y2="383" stroke="#374151" stroke-width="1"/>
+      <line x1="40" y1="308" x2="245" y2="306" stroke="#f97316" stroke-width="1.5"/>
+      <circle cx="65"  cy="293" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="90"  cy="323" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="110" cy="296" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="135" cy="318" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="155" cy="298" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="175" cy="320" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="200" cy="294" r="3" fill="#10b981" opacity=".8"/>
+      <circle cx="220" cy="316" r="3" fill="#10b981" opacity=".8"/>
+      <text x="140" y="380" fill="#10b981" font-size="9" text-anchor="middle">✅ Flat red line → homoscedastic (good)</text>
+      <!-- 4: Cook's Distance -->
+      <rect x="300" y="225" width="240" height="168" fill="var(--surface2)" rx="6" stroke="var(--border)" stroke-width="1"/>
+      <text x="420" y="242" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">4. Cook's Distance (Influence)</text>
+      <line x1="320" y1="373" x2="525" y2="373" stroke="#374151" stroke-width="1"/>
+      <line x1="320" y1="248" x2="320" y2="383" stroke="#374151" stroke-width="1"/>
+      <rect x="330" y="363" width="10" height="10" fill="#4f9eff" opacity=".7"/>
+      <rect x="348" y="353" width="10" height="20" fill="#4f9eff" opacity=".7"/>
+      <rect x="366" y="358" width="10" height="15" fill="#4f9eff" opacity=".7"/>
+      <rect x="384" y="366" width="10" height="7"  fill="#4f9eff" opacity=".7"/>
+      <rect x="402" y="361" width="10" height="12" fill="#4f9eff" opacity=".7"/>
+      <rect x="420" y="255" width="10" height="118" fill="#f87171" opacity=".85"/>
+      <text x="432" y="252" fill="#f87171" font-size="9">⚠️ outlier!</text>
+      <rect x="438" y="362" width="10" height="11" fill="#4f9eff" opacity=".7"/>
+      <rect x="456" y="358" width="10" height="15" fill="#4f9eff" opacity=".7"/>
+      <rect x="474" y="365" width="10" height="8"  fill="#4f9eff" opacity=".7"/>
+      <line x1="320" y1="338" x2="525" y2="338" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="527" y="342" fill="#fbbf24" font-size="8">4/n</text>
+      <text x="420" y="390" fill="#6b7280" font-size="9" text-anchor="middle">⚠️ High Cook's D → investigate that point</text>
+    </svg>
+    <p class="chart-caption">Figure 8.1 — Run all 4 plots after every fit. Green = good. If you see problems, address the assumption violation before trusting the model.</p>
+  </div>
+
+  <h3 class="sub-title">Cook's Distance</h3>
+  <p><strong>What:</strong> Measures how much all fitted values would change if a single observation were removed. Combines leverage (unusual X) and residual (unusual y) into one influence score.</p>
+  <div class="formula">Dᵢ = (ŷ(−i) − ŷ)ᵀ(ŷ(−i) − ŷ) / (p × MSE)</div>
+  <p><strong>Threshold:</strong> Cook's D &gt; 4/n → investigate. Cook's D &gt; 1 → very high influence.</p>
+
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ When Cook's D is low</h4><ul><li>No single point dominates the regression</li><li>Coefficients are representative of the full dataset</li><li>Robust and reliable estimates</li></ul></div>
+    <div class="pc-card cons"><h4>❌ When Cook's D is high</h4><ul><li>A single point could be controlling the entire model</li><li>Removing it drastically changes predictions</li><li>Signals the model isn't capturing the general pattern</li></ul></div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: Difference between an outlier, a high-leverage point, and an influential observation?</div>
+    <div class="a"><strong>Outlier:</strong> Unusual y value — far from the fitted line (high residual). Doesn't necessarily distort the line if it's at a typical x value.<br><strong>High-leverage point:</strong> Unusual X value — far from the centre of the predictor space. Has the potential to pull the line but doesn't necessarily if its y is consistent with the trend.<br><strong>Influential observation:</strong> High Cook's D = both unusual X AND unusual y. Removing it changes the fitted line significantly. This is the dangerous one.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S9: FEATURE ENGINEERING -->
+<!-- ════════════════════════════════════════ -->
+<section id="s9">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <h2 class="sec-title">Feature Engineering for Linear Regression</h2>
+  </div>
+  <p>Linear regression only captures linear relationships by default. Feature engineering is how we extend its power to handle non-linearity, interactions, and different data types.</p>
+
+  <h3 class="sub-title">Transformations — Fixing Non-Linearity</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Transform</th><th>When to use</th><th>Effect</th><th>Code</th></tr>
+    <tr><td><code>log(x)</code></td><td>Right-skewed features (income, population)</td><td>Compresses large values; turns exponential relationships linear</td><td><code>np.log1p(X['income'])</code></td></tr>
+    <tr><td><code>log(y)</code></td><td>Right-skewed target (house prices)</td><td>Fixes heteroscedasticity; multiplicative effects become additive</td><td><code>np.log1p(y)</code></td></tr>
+    <tr><td><code>√x</code></td><td>Count data, moderate skew</td><td>Gentler compression than log</td><td><code>np.sqrt(X['count'])</code></td></tr>
+    <tr><td><code>x²</code></td><td>U-shape or inverted-U relationship</td><td>Adds curvature to model</td><td><code>PolynomialFeatures(degree=2)</code></td></tr>
+    <tr><td><code>1/x</code></td><td>Inverse relationships (speed ~ 1/time)</td><td>Captures hyperbolic patterns</td><td><code>1 / X['time']</code></td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Interaction Terms</h3>
+  <p>An <strong>interaction term</strong> is x₁ × x₂ — it allows the effect of one feature to depend on another. Example: "the effect of advertising spend depends on whether it's peak season."</p>
+  <div class="formula">ŷ = β₀ + β₁ × ad_spend + β₂ × is_peak + β₃ × (ad_spend × is_peak)</div>
+  <p>Here β₃ captures the extra boost advertising gets during peak season that neither term alone can express.</p>
+  <p><strong>Pros:</strong> Captures complex conditional effects, keeps model linear in parameters. <strong>Cons:</strong> Combinatorial explosion with many features; hard to interpret with many interactions.</p>
+
+  <h3 class="sub-title">Encoding Categorical Features</h3>
+  <p>Linear regression requires all features to be numeric. Categories must be encoded:</p>
+  <div class="table-wrap"><table>
+    <tr><th>Method</th><th>What it does</th><th>When to use</th><th>Trap</th></tr>
+    <tr><td><strong>One-Hot Encoding</strong></td><td>Creates k−1 binary columns for k categories</td><td>Nominal categories (colour, city, type)</td><td>Drop one column to avoid perfect multicollinearity (dummy variable trap)</td></tr>
+    <tr><td><strong>Ordinal Encoding</strong></td><td>Assigns integers (0,1,2…) preserving order</td><td>Ordered categories (low/medium/high)</td><td>Implies equal spacing between levels — may not be true</td></tr>
+    <tr><td><strong>Target Encoding</strong></td><td>Replace category with mean of y for that category</td><td>High-cardinality categories</td><td>Data leakage risk — must use CV folds to compute</td></tr>
+  </table></div>
+
+  <div class="card card-warn"><div class="card-title">⚠️ The Dummy Variable Trap</div>
+    <p>With k categories, one-hot encoding creates k binary columns. If you include all k, they sum to 1 — perfectly predictable from each other. This is <strong>perfect multicollinearity</strong> and makes XᵀX singular. Always drop one category (the reference category). sklearn's OneHotEncoder has <code>drop='first'</code> for this.</p>
+  </div>
+
+  <h3 class="sub-title">Feature Scaling</h3>
+  <p>Linear regression coefficients are scale-dependent. Scaling is required for: (1) comparing feature importance via coefficients, (2) regularisation (Ridge/Lasso penalise all coefficients equally — unfair if scales differ), (3) gradient descent convergence speed.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Method</th><th>Formula</th><th>Pros</th><th>Cons</th><th>Use when</th></tr>
+    <tr><td><strong>StandardScaler</strong></td><td>(x − μ) / σ</td><td class="good">Preserves outlier info, works for most algorithms</td><td class="bad">Doesn't bound to [0,1]</td><td>Default choice for regression</td></tr>
+    <tr><td><strong>MinMaxScaler</strong></td><td>(x − min) / (max − min)</td><td class="good">Bounded [0,1] — useful for some models</td><td class="bad">Sensitive to outliers</td><td>Image data, neural networks</td></tr>
+    <tr><td><strong>RobustScaler</strong></td><td>(x − median) / IQR</td><td class="good">Robust to outliers</td><td class="neu">Not bounded</td><td>Data with many outliers</td></tr>
+  </table></div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: Does OLS (plain LinearRegression) need feature scaling?</div>
+    <div class="a"><strong>For predictions and R²: No</strong> — OLS produces correct predictions regardless of scale. The predictions ŷ = Xβ are scale-invariant because the coefficients adjust automatically. <strong>For interpreting coefficients: Yes</strong> — scaled coefficients let you compare feature importance. <strong>For regularised models (Ridge/Lasso): Mandatory</strong> — the penalty term treats all βⱼ equally, so unscaled features with large values dominate the penalty unfairly.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S10: OVERFITTING / UNDERFITTING -->
+<!-- ════════════════════════════════════════ -->
+<section id="s10">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <h2 class="sec-title">Overfitting, Underfitting &amp; Bias-Variance Tradeoff</h2>
+  </div>
+
+  <h3 class="sub-title">The Three Regimes</h3>
+  <div class="chart-wrap">
+    <svg width="560" height="195" viewBox="0 0 560 195">
+      <text x="90" y="18" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">Underfit (High Bias)</text>
+      <text x="280" y="18" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">✅ Good Fit</text>
+      <text x="470" y="18" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">Overfit (High Variance)</text>
+      <!-- underfit: flat line through non-linear data -->
+      <line x1="20" y1="165" x2="165" y2="165" stroke="#252a38" stroke-width="1"/>
+      <line x1="20" y1="30" x2="20" y2="165" stroke="#252a38" stroke-width="1"/>
+      <circle cx="35"  cy="140" r="3" fill="#4f9eff"/>
+      <circle cx="55"  cy="112" r="3" fill="#4f9eff"/>
+      <circle cx="75"  cy="90"  r="3" fill="#4f9eff"/>
+      <circle cx="95"  cy="85"  r="3" fill="#4f9eff"/>
+      <circle cx="115" cy="88"  r="3" fill="#4f9eff"/>
+      <circle cx="135" cy="108" r="3" fill="#4f9eff"/>
+      <circle cx="155" cy="142" r="3" fill="#4f9eff"/>
+      <line x1="25" y1="118" x2="162" y2="118" stroke="#fbbf24" stroke-width="2"/>
+      <text x="90" y="182" fill="#fbbf24" font-size="9" text-anchor="middle">Flat line misses the curve</text>
+      <!-- good fit: smooth curve -->
+      <line x1="190" y1="165" x2="355" y2="165" stroke="#252a38" stroke-width="1"/>
+      <line x1="190" y1="30" x2="190" y2="165" stroke="#252a38" stroke-width="1"/>
+      <circle cx="205" cy="140" r="3" fill="#4f9eff"/>
+      <circle cx="225" cy="112" r="3" fill="#4f9eff"/>
+      <circle cx="245" cy="90"  r="3" fill="#4f9eff"/>
+      <circle cx="265" cy="85"  r="3" fill="#4f9eff"/>
+      <circle cx="285" cy="88"  r="3" fill="#4f9eff"/>
+      <circle cx="305" cy="108" r="3" fill="#4f9eff"/>
+      <circle cx="325" cy="142" r="3" fill="#4f9eff"/>
+      <path d="M195,148 C210,128 225,102 245,88 C265,78 280,82 300,100 C315,118 330,142 350,150"
+            fill="none" stroke="#10b981" stroke-width="2.5"/>
+      <text x="272" y="182" fill="#10b981" font-size="9" text-anchor="middle">Fits the pattern well</text>
+      <!-- overfit: wiggly through all points -->
+      <line x1="375" y1="165" x2="540" y2="165" stroke="#252a38" stroke-width="1"/>
+      <line x1="375" y1="30" x2="375" y2="165" stroke="#252a38" stroke-width="1"/>
+      <circle cx="390" cy="140" r="3" fill="#4f9eff"/>
+      <circle cx="410" cy="112" r="3" fill="#4f9eff"/>
+      <circle cx="430" cy="90"  r="3" fill="#4f9eff"/>
+      <circle cx="450" cy="85"  r="3" fill="#4f9eff"/>
+      <circle cx="470" cy="88"  r="3" fill="#4f9eff"/>
+      <circle cx="490" cy="108" r="3" fill="#4f9eff"/>
+      <circle cx="510" cy="142" r="3" fill="#4f9eff"/>
+      <path d="M383,148 C390,140 402,130 410,112 C416,98 424,110 430,90 C436,72 444,98 450,85 C456,74 462,98 470,88 C478,76 484,115 490,108 C498,100 508,135 510,142"
+            fill="none" stroke="#f87171" stroke-width="2.5"/>
+      <text x="455" y="182" fill="#f87171" font-size="9" text-anchor="middle">Passes through all points — fails on new data</text>
+    </svg>
+    <p class="chart-caption">Figure 10.1 — Underfitting: too simple a model. Overfitting: too complex. Goal: the right complexity that generalises.</p>
+  </div>
+
+  <h3 class="sub-title">The Bias-Variance Tradeoff</h3>
+  <p>Every model's error decomposes as:</p>
+  <div class="formula">E[(y − ŷ)²] = Bias² + Variance + Irreducible Noise</div>
+
+  <div class="table-wrap"><table>
+    <tr><th>Component</th><th>Meaning</th><th>Caused by</th><th>Reduced by</th></tr>
+    <tr><td><strong>Bias²</strong></td><td>Systematic error — model is consistently wrong in the same direction</td><td>Too simple a model (underfitting), wrong assumptions</td><td>More features, polynomial terms, more complex model</td></tr>
+    <tr><td><strong>Variance</strong></td><td>Sensitivity error — model changes a lot with different training samples</td><td>Too complex a model (overfitting), too many features</td><td>Regularisation, more data, simpler model</td></tr>
+    <tr><td><strong>Irreducible Noise</strong></td><td>Inherent randomness in y that no model can explain</td><td>Measurement error, missing variables, true randomness</td><td>Cannot be reduced — it's the floor</td></tr>
+  </table></div>
+
+  <div class="chart-wrap">
+    <svg width="520" height="240" viewBox="0 0 520 240">
+      <text x="260" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">Bias-Variance Tradeoff as Model Complexity Increases</text>
+      <line x1="50" y1="200" x2="490" y2="200" stroke="#252a38" stroke-width="1.5"/>
+      <line x1="50" y1="35"  x2="50"  y2="200" stroke="#252a38" stroke-width="1.5"/>
+      <text x="270" y="220" fill="#8892a4" font-size="12" text-anchor="middle">Model Complexity →</text>
+      <text x="16" y="118" fill="#8892a4" font-size="12" text-anchor="middle" transform="rotate(-90,16,118)">Error</text>
+      <!-- Bias: decreasing curve -->
+      <path d="M55,185 C90,175 130,155 175,125 C210,102 250,82 290,68 C330,57 380,50 488,47"
+            fill="none" stroke="#4f9eff" stroke-width="2.5"/>
+      <!-- Variance: increasing curve -->
+      <path d="M55,48 C90,50 130,55 175,65 C210,78 250,98 290,122 C330,148 380,175 488,195"
+            fill="none" stroke="#f97316" stroke-width="2.5"/>
+      <!-- Total error: U shape -->
+      <path d="M55,185 C90,175 130,155 175,118 C210,95 245,88 270,85 C295,88 330,100 370,125 C400,148 440,175 488,200"
+            fill="none" stroke="#10b981" stroke-width="3"/>
+      <!-- Sweet spot -->
+      <circle cx="270" cy="85" r="5" fill="#fbbf24"/>
+      <line x1="270" y1="85" x2="270" y2="200" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="278" y="80" fill="#fbbf24" font-size="10">Sweet spot</text>
+      <!-- Legend -->
+      <line x1="60" y1="42" x2="90" y2="42" stroke="#4f9eff" stroke-width="2.5"/>
+      <text x="95" y="46" fill="#4f9eff" font-size="11">Bias²</text>
+      <line x1="155" y1="42" x2="185" y2="42" stroke="#f97316" stroke-width="2.5"/>
+      <text x="190" y="46" fill="#f97316" font-size="11">Variance</text>
+      <line x1="270" y1="42" x2="300" y2="42" stroke="#10b981" stroke-width="3"/>
+      <text x="305" y="46" fill="#10b981" font-size="11">Total Error</text>
+    </svg>
+    <p class="chart-caption">Figure 10.2 — As model complexity increases, bias decreases but variance rises. The sweet spot minimises total error — found via cross-validation.</p>
+  </div>
+
+  <h3 class="sub-title">How This Applies to Linear Regression Specifically</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Situation</th><th>Bias</th><th>Variance</th><th>Fix</th></tr>
+    <tr><td>Plain OLS, few features, true relationship is non-linear</td><td class="bad">High</td><td class="good">Low</td><td>Add polynomial features or interactions</td></tr>
+    <tr><td>OLS with many features, p ≈ n</td><td class="good">Low</td><td class="bad">High</td><td>Regularise with Ridge or Lasso</td></tr>
+    <tr><td>Ridge with high λ</td><td class="bad">Moderate</td><td class="good">Low</td><td>Reduce λ via cross-validation</td></tr>
+    <tr><td>Ridge with λ ≈ 0</td><td class="good">Very low</td><td class="bad">Higher</td><td>Increase λ</td></tr>
+  </table></div>
+
+  <div class="interview-box">
+    <div class="q">🎙 Interview: How does regularisation control the bias-variance tradeoff?</div>
+    <div class="a">Regularisation (Ridge/Lasso) introduces a controlled amount of bias (it shrinks coefficients away from OLS estimates) in exchange for a reduction in variance (coefficients become more stable across different training samples). As λ increases: bias increases, variance decreases. As λ → 0: back to OLS (zero bias, maximum variance). The optimal λ balances these — found by minimising cross-validation error.</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S11: CV & PIPELINES -->
+<!-- ════════════════════════════════════════ -->
+<section id="s11">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <h2 class="sec-title">Cross-Validation &amp; Pipelines</h2>
+  </div>
+
+  <h3 class="sub-title">Why Not Just Train/Test Split?</h3>
+  <p>A single train/test split gives one estimate of performance. Its variance is high — you might get lucky or unlucky with how the split falls. Cross-validation averages over many splits to give a more reliable estimate.</p>
+
+  <div class="chart-wrap">
+    <svg width="520" height="180" viewBox="0 0 520 180">
+      <text x="260" y="22" fill="#e2e8f0" font-size="13" font-weight="700" text-anchor="middle">5-Fold Cross-Validation</text>
+      <text x="48" y="52" fill="#8892a4" font-size="11" text-anchor="end">Fold 1</text>
+      <text x="48" y="82" fill="#8892a4" font-size="11" text-anchor="end">Fold 2</text>
+      <text x="48" y="112" fill="#8892a4" font-size="11" text-anchor="end">Fold 3</text>
+      <text x="48" y="142" fill="#8892a4" font-size="11" text-anchor="end">Fold 4</text>
+      <text x="48" y="172" fill="#8892a4" font-size="11" text-anchor="end">Fold 5</text>
+      <!-- Fold 1: first block = test -->
+      <rect x="54" y="38" width="80" height="22" fill="#f97316" rx="3" opacity=".85"/>
+      <rect x="138" y="38" width="320" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <!-- Fold 2 -->
+      <rect x="54"  y="68" width="80" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <rect x="138" y="68" width="80" height="22" fill="#f97316" rx="3" opacity=".85"/>
+      <rect x="222" y="68" width="236" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <!-- Fold 3 -->
+      <rect x="54"  y="98" width="160" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <rect x="218" y="98" width="80" height="22" fill="#f97316" rx="3" opacity=".85"/>
+      <rect x="302" y="98" width="156" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <!-- Fold 4 -->
+      <rect x="54"  y="128" width="240" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <rect x="298" y="128" width="80" height="22" fill="#f97316" rx="3" opacity=".85"/>
+      <rect x="382" y="128" width="76" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <!-- Fold 5 -->
+      <rect x="54"  y="158" width="320" height="22" fill="#4f9eff" rx="3" opacity=".5"/>
+      <rect x="378" y="158" width="80" height="22" fill="#f97316" rx="3" opacity=".85"/>
+      <!-- legend -->
+      <rect x="420" y="38" width="14" height="10" fill="#f97316" rx="2" opacity=".85"/>
+      <text x="438" y="47" fill="#8892a4" font-size="10">Test</text>
+      <rect x="420" y="52" width="14" height="10" fill="#4f9eff" rx="2" opacity=".5"/>
+      <text x="438" y="61" fill="#8892a4" font-size="10">Train</text>
+    </svg>
+    <p class="chart-caption">Figure 11.1 — In 5-fold CV, each fold takes a turn as the test set. Final score = average of 5 scores. Much more reliable than one split.</p>
+  </div>
+
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of Cross-Validation</h4><ul><li>More reliable performance estimate — averages out lucky/unlucky splits</li><li>Uses all data for both training and testing (efficient)</li><li>Detects overfitting — gap between train and CV score signals it</li><li>Required for tuning hyperparameters without test set leakage</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of Cross-Validation</h4><ul><li>k× more expensive to compute — fits k models instead of 1</li><li>Shouldn't be used for time-series data (use TimeSeriesSplit instead — no data leakage from future)</li><li>For very large datasets, CV may be too slow — use a single large holdout</li></ul></div>
+  </div>
+
+  <h3 class="sub-title">Pipelines — Preventing Data Leakage</h3>
+  <div class="card card-red"><div class="card-title">⛔ What is Data Leakage?</div>
+    <p>Leakage occurs when information from the test set "leaks" into the training process, making your model appear better than it really is. The most common cause: fitting <code>StandardScaler</code> on the full dataset before splitting — the scaler "knows" the test set's mean and std. This inflates performance metrics.</p>
+    <p><strong>Fix:</strong> Always use a <code>Pipeline</code> — it ensures scaling (and all other preprocessing) is fit <em>only</em> on training data and <em>applied</em> to test data using training statistics.</p>
+  </div>
+<pre>
+<span class="c"># ❌ WRONG — leaks test data into scaler</span>
+scaler = <span class="f">StandardScaler</span>()
+X_scaled = scaler.<span class="f">fit_transform</span>(X)  <span class="c"># uses full dataset!</span>
+X_train, X_test = <span class="f">train_test_split</span>(X_scaled)
+
+<span class="c"># ✅ CORRECT — scaler only sees training data</span>
+pipeline = <span class="f">Pipeline</span>([
+    (<span class="s">'scaler'</span>, <span class="f">StandardScaler</span>()),
+    (<span class="s">'model'</span>,  <span class="f">LinearRegression</span>())
+])
+pipeline.<span class="f">fit</span>(X_train, y_train)   <span class="c"># scaler.fit() only on X_train</span>
+pipeline.<span class="f">predict</span>(X_test)          <span class="c"># scaler.transform() applied to X_test</span>
+</pre>
+  <div class="pc-grid">
+    <div class="pc-card pros"><h4>✅ Pros of Pipelines</h4><ul><li>Eliminates data leakage by design</li><li>One object to fit, transform, and predict — cleaner code</li><li>Works seamlessly with GridSearchCV / cross_val_score</li><li>Serialise the whole workflow with one joblib.dump()</li></ul></div>
+    <div class="pc-card cons"><h4>❌ Cons of Pipelines</h4><ul><li>Slightly harder to debug individual steps</li><li>Parameter names need <code>stepname__param</code> prefix in GridSearch</li><li>Some advanced custom transforms require writing a custom sklearn transformer</li></ul></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S12: SKLEARN CODE -->
+<!-- ════════════════════════════════════════ -->
+<section id="s12">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <h2 class="sec-title">Complete scikit-learn Code</h2>
+  </div>
+
+  <h3 class="sub-title">Part 1 — Imports &amp; Data</h3>
+<pre>
+<span class="k">import</span> <span class="p">numpy as np</span>
+<span class="k">import</span> <span class="p">pandas as pd</span>
+<span class="k">import</span> <span class="p">matplotlib.pyplot as plt</span>
+<span class="k">import</span> <span class="p">scipy.stats as stats</span>
+
+<span class="k">from</span> <span class="p">sklearn.datasets </span><span class="k">import</span> <span class="p">fetch_california_housing</span>
+<span class="k">from</span> <span class="p">sklearn.model_selection </span><span class="k">import</span> <span class="p">train_test_split, cross_val_score, KFold, GridSearchCV</span>
+<span class="k">from</span> <span class="p">sklearn.preprocessing </span><span class="k">import</span> <span class="p">StandardScaler, MinMaxScaler, RobustScaler</span>
+<span class="k">from</span> <span class="p">sklearn.linear_model </span><span class="k">import</span> <span class="p">(
+    LinearRegression, Ridge, RidgeCV,
+    Lasso, LassoCV,
+    ElasticNet, ElasticNetCV,
+    HuberRegressor, SGDRegressor
+)</span>
+<span class="k">from</span> <span class="p">sklearn.pipeline </span><span class="k">import</span> <span class="p">Pipeline</span>
+<span class="k">from</span> <span class="p">sklearn.metrics </span><span class="k">import</span> <span class="p">(
+    mean_squared_error, mean_absolute_error,
+    r2_score, mean_absolute_percentage_error
+)</span>
+
+<span class="c"># ── Load data ──────────────────────────────────────────────</span>
+data = <span class="f">fetch_california_housing</span>(as_frame=<span class="k">True</span>)
+df = data.frame
+X = df.drop(<span class="s">"MedHouseVal"</span>, axis=<span class="n">1</span>)
+y = df[<span class="s">"MedHouseVal"</span>]
+
+<span class="c"># Always inspect before modelling</span>
+<span class="f">print</span>(df.<span class="f">describe</span>())
+<span class="f">print</span>(df.<span class="f">isnull</span>().<span class="f">sum</span>())
+<span class="f">print</span>(<span class="s">f"Shape: {df.shape}"</span>)
+
+<span class="c"># 80/20 train-test split</span>
+X_train, X_test, y_train, y_test = <span class="f">train_test_split</span>(
+    X, y,
+    test_size=<span class="n">0.2</span>,
+    random_state=<span class="n">42</span>     <span class="c"># reproducibility</span>
+)
+</pre>
+
+  <h3 class="sub-title">Part 2 — Baseline OLS</h3>
+<pre>
+<span class="c"># ── Pipeline: StandardScaler → LinearRegression ────────────</span>
+ols_pipe = <span class="f">Pipeline</span>([
+    (<span class="s">'scaler'</span>, <span class="f">StandardScaler</span>()),
+    (<span class="s">'model'</span>,  <span class="f">LinearRegression</span>(
+        fit_intercept=<span class="k">True</span>,    <span class="c"># learn β₀ (recommended: always True)</span>
+        copy_X=<span class="k">True</span>,           <span class="c"># don't modify original X array</span>
+        n_jobs=<span class="n">-1</span>,             <span class="c"># use all CPU cores (multi-output only)</span>
+        positive=<span class="k">False</span>         <span class="c"># True = non-negative coefficients (NNLS)</span>
+    ))
+])
+
+ols_pipe.<span class="f">fit</span>(X_train, y_train)
+y_pred = ols_pipe.<span class="f">predict</span>(X_test)
+
+<span class="c"># ── Metrics ────────────────────────────────────────────────</span>
+mse  = <span class="f">mean_squared_error</span>(y_test, y_pred)
+rmse = np.<span class="f">sqrt</span>(mse)
+mae  = <span class="f">mean_absolute_error</span>(y_test, y_pred)
+r2   = <span class="f">r2_score</span>(y_test, y_pred)
+mape = <span class="f">mean_absolute_percentage_error</span>(y_test, y_pred)
+
+<span class="f">print</span>(<span class="s">f"MSE : {mse:.4f}  |  RMSE: {rmse:.4f}"</span>)
+<span class="f">print</span>(<span class="s">f"MAE : {mae:.4f}  |  R²  : {r2:.4f}  |  MAPE: {mape:.2%}"</span>)
+
+<span class="c"># ── Coefficients ───────────────────────────────────────────</span>
+model = ols_pipe.named_steps[<span class="s">'model'</span>]
+coef_df = pd.<span class="f">DataFrame</span>({
+    <span class="s">'Feature'</span>:     X.columns,
+    <span class="s">'Coefficient'</span>: model.coef_
+}).<span class="f">sort_values</span>(<span class="s">'Coefficient'</span>, key=<span class="k">abs</span>, ascending=<span class="k">False</span>)
+<span class="f">print</span>(coef_df)
+<span class="c"># Interpretation: β = 0.5 → feature↑1 std → target↑0.5 units (after StandardScaling)</span>
+</pre>
+
+  <h3 class="sub-title">Part 3 — Cross-Validation</h3>
+<pre>
+kf = <span class="f">KFold</span>(
+    n_splits=<span class="n">5</span>,         <span class="c"># 5 folds — standard choice. 10 for small datasets.</span>
+    shuffle=<span class="k">True</span>,       <span class="c"># shuffle before splitting — prevents ordering bias</span>
+    random_state=<span class="n">42</span>     <span class="c"># reproducibility</span>
+)
+
+<span class="c"># cross_val_score fits model k times and returns k scores</span>
+cv_r2 = <span class="f">cross_val_score</span>(
+    ols_pipe, X, y,
+    cv=kf,
+    scoring=<span class="s">'r2'</span>,       <span class="c"># also try 'neg_root_mean_squared_error'</span>
+    n_jobs=<span class="n">-1</span>
+)
+<span class="f">print</span>(<span class="s">f"CV R²: {cv_r2.mean():.4f} ± {cv_r2.std():.4f}"</span>)
+<span class="c"># High std → model is unstable (consider regularisation)</span>
+<span class="c"># Large gap: train_R² >> CV_R² → overfitting</span>
+</pre>
+
+  <h3 class="sub-title">Part 4 — Ridge with GridSearchCV</h3>
+<pre>
+ridge_pipe = <span class="f">Pipeline</span>([
+    (<span class="s">'scaler'</span>, <span class="f">StandardScaler</span>()),
+    (<span class="s">'model'</span>,  <span class="f">Ridge</span>())
+])
+
+<span class="c"># param names use stepname__param syntax</span>
+ridge_params = {
+    <span class="s">'model__alpha'</span>:        [<span class="n">0.001, 0.01, 0.1, 1, 10, 100, 1000</span>],
+    <span class="s">'model__fit_intercept'</span>:[<span class="k">True</span>],
+    <span class="s">'model__solver'</span>:       [<span class="s">'auto'</span>, <span class="s">'svd'</span>, <span class="s">'cholesky'</span>, <span class="s">'lsqr'</span>]
+}
+
+ridge_gs = <span class="f">GridSearchCV</span>(
+    ridge_pipe, ridge_params,
+    cv=<span class="n">5</span>,
+    scoring=<span class="s">'r2'</span>,
+    n_jobs=<span class="n">-1</span>,
+    refit=<span class="k">True</span>,    <span class="c"># refit best model on full train set</span>
+    verbose=<span class="n">1</span>
+)
+ridge_gs.<span class="f">fit</span>(X_train, y_train)
+
+<span class="f">print</span>(<span class="s">f"Best Ridge params : {ridge_gs.best_params_}"</span>)
+<span class="f">print</span>(<span class="s">f"Best CV R²        : {ridge_gs.best_score_:.4f}"</span>)
+<span class="f">print</span>(<span class="s">f"Test R²           : {r2_score(y_test, ridge_gs.predict(X_test)):.4f}"</span>)
+
+<span class="c"># Faster alternative: RidgeCV (built-in LOO or k-fold CV)</span>
+ridge_cv = <span class="f">RidgeCV</span>(alphas=np.<span class="f">logspace</span>(<span class="n">-3</span>, <span class="n">3</span>, <span class="n">100</span>), cv=<span class="n">5</span>)
+ridge_cv.<span class="f">fit</span>(StandardScaler().<span class="f">fit_transform</span>(X_train), y_train)
+<span class="f">print</span>(<span class="s">f"RidgeCV best alpha : {ridge_cv.alpha_}"</span>)
+</pre>
+
+  <h3 class="sub-title">Part 5 — Lasso with GridSearchCV</h3>
+<pre>
+lasso_pipe = <span class="f">Pipeline</span>([
+    (<span class="s">'scaler'</span>, <span class="f">StandardScaler</span>()),
+    (<span class="s">'model'</span>,  <span class="f">Lasso</span>(max_iter=<span class="n">10000</span>, tol=<span class="n">1e-4</span>))
+])
+
+lasso_params = {
+    <span class="s">'model__alpha'</span>:     np.<span class="f">logspace</span>(<span class="n">-4</span>, <span class="n">2</span>, <span class="n">50</span>),
+    <span class="s">'model__selection'</span>: [<span class="s">'cyclic'</span>, <span class="s">'random'</span>]
+}
+
+lasso_gs = <span class="f">GridSearchCV</span>(lasso_pipe, lasso_params, cv=<span class="n">5</span>,
+                        scoring=<span class="s">'r2'</span>, n_jobs=<span class="n">-1</span>)
+lasso_gs.<span class="f">fit</span>(X_train, y_train)
+
+lasso_model = lasso_gs.best_estimator_.named_steps[<span class="s">'model'</span>]
+n_zero = np.<span class="f">sum</span>(lasso_model.coef_ == <span class="n">0</span>)
+<span class="f">print</span>(<span class="s">f"Features zeroed by Lasso: {n_zero} / {X.shape[1]}"</span>)
+<span class="f">print</span>(<span class="s">f"Non-zero features       : {X.columns[lasso_model.coef_ != 0].tolist()}"</span>)
+</pre>
+
+  <h3 class="sub-title">Part 6 — ElasticNet</h3>
+<pre>
+enet_pipe = <span class="f">Pipeline</span>([
+    (<span class="s">'scaler'</span>, <span class="f">StandardScaler</span>()),
+    (<span class="s">'model'</span>,  <span class="f">ElasticNet</span>(max_iter=<span class="n">10000</span>))
+])
+
+enet_params = {
+    <span class="s">'model__alpha'</span>:    [<span class="n">0.01, 0.1, 1, 10</span>],
+    <span class="s">'model__l1_ratio'</span>: [<span class="n">0.1, 0.3, 0.5, 0.7, 0.9, 1.0</span>]
+    <span class="c"># l1_ratio=0 → pure Ridge, l1_ratio=1 → pure Lasso</span>
+}
+
+enet_gs = <span class="f">GridSearchCV</span>(enet_pipe, enet_params, cv=<span class="n">5</span>,
+                       scoring=<span class="s">'r2'</span>, n_jobs=<span class="n">-1</span>)
+enet_gs.<span class="f">fit</span>(X_train, y_train)
+<span class="f">print</span>(<span class="s">f"Best ElasticNet: {enet_gs.best_params_}"</span>)
+</pre>
+
+  <h3 class="sub-title">Part 7 — Residual Diagnostics</h3>
+<pre>
+fitted    = ols_pipe.<span class="f">predict</span>(X_train)
+residuals = y_train.values - fitted
+
+fig, axes = plt.<span class="f">subplots</span>(<span class="n">1</span>, <span class="n">3</span>, figsize=(<span class="n">15</span>, <span class="n">4</span>))
+
+<span class="c"># 1. Residuals vs Fitted — check linearity + homoscedasticity</span>
+axes[<span class="n">0</span>].<span class="f">scatter</span>(fitted, residuals, alpha=<span class="n">0.3</span>, s=<span class="n">10</span>, color=<span class="s">'steelblue'</span>)
+axes[<span class="n">0</span>].<span class="f">axhline</span>(y=<span class="n">0</span>, color=<span class="s">'red'</span>, linestyle=<span class="s">'--'</span>)
+axes[<span class="n">0</span>].<span class="f">set</span>(xlabel=<span class="s">'Fitted'</span>, ylabel=<span class="s">'Residuals'</span>, title=<span class="s">'Residuals vs Fitted'</span>)
+
+<span class="c"># 2. Q-Q plot — check normality of residuals</span>
+stats.<span class="f">probplot</span>(residuals, dist=<span class="s">"norm"</span>, plot=axes[<span class="n">1</span>])
+axes[<span class="n">1</span>].<span class="f">set_title</span>(<span class="s">'Normal Q-Q'</span>)
+
+<span class="c"># 3. Histogram — visualise residual distribution</span>
+axes[<span class="n">2</span>].<span class="f">hist</span>(residuals, bins=<span class="n">50</span>, edgecolor=<span class="s">'black'</span>, color=<span class="s">'steelblue'</span>)
+axes[<span class="n">2</span>].<span class="f">set</span>(xlabel=<span class="s">'Residual'</span>, title=<span class="s">'Residual Distribution'</span>)
+
+plt.<span class="f">tight_layout</span>()
+plt.<span class="f">show</span>()
+</pre>
+
+  <h3 class="sub-title">Part 8 — VIF (Multicollinearity Check)</h3>
+<pre>
+<span class="k">from</span> <span class="p">statsmodels.stats.outliers_influence </span><span class="k">import</span> <span class="p">variance_inflation_factor</span>
+<span class="k">from</span> <span class="p">statsmodels.tools.tools </span><span class="k">import</span> <span class="p">add_constant</span>
+
+X_scaled = <span class="f">StandardScaler</span>().<span class="f">fit_transform</span>(X_train)
+X_const  = <span class="f">add_constant</span>(X_scaled)
+
+vif_df = pd.<span class="f">DataFrame</span>({
+    <span class="s">'Feature'</span>: [<span class="s">'const'</span>] + <span class="f">list</span>(X.columns),
+    <span class="s">'VIF'</span>:     [<span class="f">variance_inflation_factor</span>(X_const, i)
+               <span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(X_const.shape[<span class="n">1</span>])]
+})
+<span class="f">print</span>(vif_df)
+<span class="c"># VIF > 5: investigate   VIF > 10: serious → remove feature or use Ridge</span>
+</pre>
+
+  <h3 class="sub-title">Part 9 — Normal Equation (Manual, NumPy)</h3>
+<pre>
+<span class="c"># Replicate sklearn's LinearRegression manually
+# β = (XᵀX)⁻¹ Xᵀy</span>
+X_scaled = <span class="f">StandardScaler</span>().<span class="f">fit_transform</span>(X_train)
+X_b = np.<span class="f">c_</span>[np.<span class="f">ones</span>(X_scaled.shape[<span class="n">0</span>]), X_scaled]  <span class="c"># prepend column of 1s for β₀</span>
+y_arr = y_train.values
+
+<span class="c"># Method 1: Direct inversion (less stable)</span>
+beta_direct = np.linalg.<span class="f">inv</span>(X_b.T @ X_b) @ X_b.T @ y_arr
+
+<span class="c"># Method 2: lstsq (numerically stable — what sklearn uses internally)</span>
+beta_lstsq = np.linalg.<span class="f">lstsq</span>(X_b, y_arr, rcond=<span class="k">None</span>)[<span class="n">0</span>]
+
+<span class="f">print</span>(<span class="s">"Intercept (manual):"</span>, beta_lstsq[<span class="n">0</span>])
+<span class="f">print</span>(<span class="s">"Coefficients:"</span>, beta_lstsq[<span class="n">1</span>:])
+<span class="c"># Should match ols_pipe.named_steps['model'].coef_</span>
+</pre>
+
+  <h3 class="sub-title">Part 10 — Save &amp; Load Model</h3>
+<pre>
+<span class="k">import</span> <span class="p">joblib</span>
+
+<span class="c"># Save the entire pipeline (scaler + model together)</span>
+<span class="f">joblib.dump</span>(ols_pipe, <span class="s">'linear_regression_pipeline.pkl'</span>)
+
+<span class="c"># Load in production</span>
+loaded_pipe = <span class="f">joblib.load</span>(<span class="s">'linear_regression_pipeline.pkl'</span>)
+predictions = loaded_pipe.<span class="f">predict</span>(X_test)
+<span class="c"># The loaded pipeline includes the fitted scaler — no need to re-scale manually</span>
+</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S13: HYPERPARAMETERS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s13">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <h2 class="sec-title">Hyperparameter Deep Dive</h2>
+  </div>
+
+  <h3 class="sub-title">LinearRegression</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Parameter</th><th>Default</th><th>What it controls</th><th>Pros/Cons of changing</th></tr>
+    <tr><td><code>fit_intercept</code></td><td>True</td><td>Whether to compute β₀. False forces line through origin.</td><td>✅ True: always preferred — most data doesn't pass through zero.<br>❌ False: R² can go negative on test set; only use with domain justification.</td></tr>
+    <tr><td><code>copy_X</code></td><td>True</td><td>Copy X before computation. False allows in-place modification (saves memory).</td><td>✅ True: safe — original array untouched.<br>❌ False: risky if you use X after fitting.</td></tr>
+    <tr><td><code>n_jobs</code></td><td>None (1 core)</td><td>CPU cores for computation. -1 = all.</td><td>✅ -1: faster for multi-output regression.<br>❌ Has no effect for single-target OLS (SVD is single-threaded anyway).</td></tr>
+    <tr><td><code>positive</code></td><td>False</td><td>Forces all β ≥ 0 (Non-Negative Least Squares).</td><td>✅ True: use when domain says feature can only have positive effect (costs, areas).<br>❌ True: uses slower iterative solver, may underfit if some features truly have negative effects.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Ridge</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Parameter</th><th>Default</th><th>What it controls</th><th>When to change</th></tr>
+    <tr><td><code>alpha</code></td><td>1.0</td><td>L2 penalty strength λ. Higher → smaller coefficients → more bias, less variance. 0 = OLS.</td><td><strong>Always tune.</strong> Use RidgeCV or np.logspace(-3, 3, 100). Start around 1. Increase if overfitting.</td></tr>
+    <tr><td><code>fit_intercept</code></td><td>True</td><td>Same as LinearRegression.</td><td>Leave True.</td></tr>
+    <tr><td><code>solver</code></td><td>'auto'</td><td>Algorithm. 'svd': small data, exact. 'cholesky': medium data. 'lsqr': sparse data. 'sag'/'saga': large data. 'lbfgs': multiple targets.</td><td>'sag'/'saga' for n &gt; 100k. 'svd' for p &lt; 1000. 'auto' selects based on data.</td></tr>
+    <tr><td><code>tol</code></td><td>1e-4</td><td>Convergence tolerance for iterative solvers.</td><td>Decrease (1e-6) for precision. Increase for speed (may give imprecise β).</td></tr>
+    <tr><td><code>max_iter</code></td><td>None</td><td>Max iterations for sag/saga/lsqr. None = solver default.</td><td>Set 10000 if you get ConvergenceWarning.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">Lasso</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Parameter</th><th>Default</th><th>What it controls</th><th>When to change</th></tr>
+    <tr><td><code>alpha</code></td><td>1.0</td><td>L1 penalty. Higher → more zeros → sparser model.</td><td><strong>Always tune.</strong> LassoCV is most efficient for path-based search. Low α → almost OLS. High α → all zeros.</td></tr>
+    <tr><td><code>max_iter</code></td><td>1000</td><td>Max coordinate descent iterations.</td><td>Increase to 10000–100000 if ConvergenceWarning appears.</td></tr>
+    <tr><td><code>tol</code></td><td>1e-4</td><td>Stop when dual gap &lt; tol.</td><td>Decrease for stricter convergence.</td></tr>
+    <tr><td><code>selection</code></td><td>'cyclic'</td><td>'cyclic': update features in order each pass. 'random': random order (can converge faster).</td><td>'random' with higher max_iter for speed on large datasets.</td></tr>
+    <tr><td><code>warm_start</code></td><td>False</td><td>Reuse previous fit's coefficients as starting point.</td><td>True when incrementally fitting across many alpha values (regularisation path).</td></tr>
+    <tr><td><code>fit_intercept</code></td><td>True</td><td>Intercept is never penalised (correct behaviour).</td><td>Leave True.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">ElasticNet</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Parameter</th><th>Default</th><th>What it controls</th><th>When to change</th></tr>
+    <tr><td><code>alpha</code></td><td>1.0</td><td>Overall penalty strength (scales both L1 and L2 terms).</td><td>Tune with GridSearchCV. Try logspace(-3, 2, 50).</td></tr>
+    <tr><td><code>l1_ratio</code></td><td>0.5</td><td>Mix: 0 = Ridge only, 1 = Lasso only, 0.5 = equal. The critical mixing parameter.</td><td>Tune: [0.1, 0.3, 0.5, 0.7, 0.9, 1.0]. If final l1_ratio ≈ 1, just use Lasso. If ≈ 0, use Ridge.</td></tr>
+    <tr><td><code>max_iter</code></td><td>1000</td><td>Coordinate descent iterations.</td><td>Increase to 10000 if warnings.</td></tr>
+    <tr><td><code>tol</code></td><td>1e-4</td><td>Convergence tolerance.</td><td>Same as Lasso.</td></tr>
+    <tr><td><code>warm_start</code></td><td>False</td><td>Reuse previous solution.</td><td>True for regularisation path scanning.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">SGDRegressor (Gradient Descent for Linear Regression)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Parameter</th><th>Default</th><th>Meaning</th></tr>
+    <tr><td><code>loss</code></td><td>'squared_error'</td><td>Loss function: 'squared_error' (MSE), 'huber' (robust to outliers), 'epsilon_insensitive' (SVR-like).</td></tr>
+    <tr><td><code>penalty</code></td><td>'l2'</td><td>Regularisation: 'l2' (Ridge), 'l1' (Lasso), 'elasticnet'. None = no regularisation.</td></tr>
+    <tr><td><code>alpha</code></td><td>1e-4</td><td>Regularisation strength. Note: different scale from Ridge/Lasso alpha!</td></tr>
+    <tr><td><code>learning_rate</code></td><td>'invscaling'</td><td>LR schedule: 'constant', 'optimal', 'invscaling', 'adaptive'.</td></tr>
+    <tr><td><code>max_iter</code></td><td>1000</td><td>Max epochs over training data.</td></tr>
+    <tr><td><code>tol</code></td><td>1e-3</td><td>Stop if loss doesn't improve by tol for n_iter_no_change epochs.</td></tr>
+    <tr><td><code>n_iter_no_change</code></td><td>5</td><td>Early stopping patience.</td></tr>
+    <tr><td><code>shuffle</code></td><td>True</td><td>Shuffle data each epoch (recommended for SGD).</td></tr>
+  </table></div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S14: OVERALL PROS/CONS -->
+<!-- ════════════════════════════════════════ -->
+<section id="s14">
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <h2 class="sec-title">Overall Pros, Cons &amp; When to Use</h2>
+  </div>
+
+  <div class="table-wrap"><table>
+    <tr><th>Category</th><th>Linear Regression</th></tr>
+    <tr><td class="good">✅ Interpretability</td><td>Coefficients directly state the effect of each feature in real units. Explainable to any stakeholder. Regulatory industries (banking, insurance, healthcare) frequently require this.</td></tr>
+    <tr><td class="good">✅ Speed</td><td>OLS closed form is O(np²) — fits millions of rows in seconds. SVD is fast for p &lt; 10,000.</td></tr>
+    <tr><td class="good">✅ No hyperparameters (OLS)</td><td>Plain LinearRegression has effectively zero hyperparameters (fit_intercept is almost always True). Faster to deploy than tuned models.</td></tr>
+    <tr><td class="good">✅ Statistical inference</td><td>Via statsmodels, get p-values, t-statistics, confidence intervals, F-test — tools that tree models can't provide natively.</td></tr>
+    <tr><td class="good">✅ Convex loss</td><td>Guaranteed global optimum — no local minima, no random restarts, fully reproducible.</td></tr>
+    <tr><td class="good">✅ Memory efficient</td><td>Only stores p+1 numbers (coefficients). Doesn't store training data like KNN.</td></tr>
+    <tr><td class="good">✅ Handles large n well</td><td>Mini-batch SGD (SGDRegressor) scales to hundreds of millions of samples.</td></tr>
+    <tr><td class="bad">❌ Linearity assumption</td><td>Cannot capture non-linear patterns without feature engineering. A polynomial relationship will produce systematically biased predictions.</td></tr>
+    <tr><td class="bad">❌ Outlier sensitivity</td><td>MSE heavily amplifies outliers. One point with a $1M error contributes $1T to MSE. Use Huber Regression when outliers are real.</td></tr>
+    <tr><td class="bad">❌ Multicollinearity</td><td>Unstable coefficients when features are correlated. Adds variance without adding useful predictions. Ridge is the standard fix.</td></tr>
+    <tr><td class="bad">❌ Feature engineering required</td><td>Interactions and non-linear terms must be added manually. Random Forests handle these automatically.</td></tr>
+    <tr><td class="bad">❌ Strict assumptions</td><td>Violated assumptions undermine p-values and confidence intervals (but not necessarily predictions). Must run diagnostics every time.</td></tr>
+    <tr><td class="bad">❌ No automatic feature selection</td><td>OLS and Ridge keep all features. Must use Lasso or domain knowledge for selection.</td></tr>
+    <tr><td class="bad">❌ Performance ceiling</td><td>For complex real-world relationships (images, text, interactions), gradient boosting or neural networks will substantially outperform linear models.</td></tr>
+  </table></div>
+
+  <h3 class="sub-title">When to Use Linear Regression vs. Alternatives</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Situation</th><th>Best choice</th><th>Why</th></tr>
+    <tr><td>Interpretability is required (banking, medical)</td><td class="good">Linear Regression</td><td>Coefficients have direct causal-ish interpretations</td></tr>
+    <tr><td>Fast baseline needed</td><td class="good">Linear Regression</td><td>Trains in milliseconds; if it works well, no need for complexity</td></tr>
+    <tr><td>Strong non-linear relationships</td><td class="bad">Gradient Boosting / NN</td><td>Linear model will underfit systematically</td></tr>
+    <tr><td>Many correlated features, no selection needed</td><td class="good">Ridge</td><td>Distributes weight stably across correlated features</td></tr>
+    <tr><td>Many features, only a few matter</td><td class="good">Lasso</td><td>Auto-zeros irrelevant features</td></tr>
+    <tr><td>Many features + groups of correlated predictors</td><td class="good">ElasticNet</td><td>Handles groups better than Lasso alone</td></tr>
+    <tr><td>Lots of outliers in y</td><td class="good">HuberRegressor</td><td>Robust to outliers — uses MAE for large residuals</td></tr>
+    <tr><td>Massive dataset (millions of rows)</td><td class="good">SGDRegressor</td><td>Mini-batch updates, doesn't need full data in RAM</td></tr>
+    <tr><td>Need probability estimates</td><td class="bad">Logistic Regression</td><td>Linear regression doesn't output calibrated probabilities</td></tr>
+  </table></div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════════════════════════ -->
+<!-- S15: INTERVIEW Q&A -->
+<!-- ════════════════════════════════════════ -->
+<section id="s15">
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <h2 class="sec-title">Tricky Interview Questions &amp; Full Model Answers</h2>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q1. Can you use linear regression for classification?</div>
+    <div class="a">Technically yes, but it's a bad idea. Predictions are unbounded (can exceed 1 or go below 0), so they can't be treated as probabilities. Also, MSE penalises far-away class labels more than nearby ones — wrong behaviour for classification. The correct tool is Logistic Regression, which is still linear in its parameters but passes through a sigmoid to bound outputs to [0,1]. That said, the Linear Probability Model (OLS on a 0/1 target) is used in econometrics where coefficient interpretability outweighs this limitation.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q2. Does linear regression need feature scaling? Doesn't OLS automatically adjust?</div>
+    <div class="a">For <strong>predictions and R²</strong>: OLS is scale-invariant — the predictions ŷ = Xβ are correct regardless of scale because β adjusts to compensate. For <strong>comparing coefficients</strong>: you must scale — a coefficient of 0.001 on income (dollars) vs. 5 on rooms doesn't mean rooms matter 5000× more. For <strong>regularisation (Ridge/Lasso)</strong>: scaling is mandatory — the penalty treats all βⱼ equally, so a large-scale feature gets unjustly penalised. For <strong>gradient descent</strong>: scaling is critical — poorly scaled features create an elongated loss surface where gradient descent bounces and converges slowly.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q3. What is the Gauss-Markov theorem, and why should an interviewer care?</div>
+    <div class="a">Under the classical OLS assumptions (linearity, independence, homoscedasticity, no perfect multicollinearity — but NOT requiring normality), the OLS estimator is <strong>BLUE: Best Linear Unbiased Estimator</strong>. "Best" = lowest variance among all linear unbiased estimators. This is the theoretical justification for OLS being the default. It tells you: as long as assumptions hold, no other linear method can do better. When assumptions are violated, BLUE breaks down — which is why Ridge (biased but lower variance) can actually improve performance.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q4. Why does Ridge work better than OLS with multicollinearity?</div>
+    <div class="a">With multicollinearity, XᵀX has very small eigenvalues (near-singular), meaning small changes in y produce huge changes in β = (XᵀX)⁻¹Xᵀy. Ridge adds λI to the diagonal: β_ridge = (XᵀX + λI)⁻¹Xᵀy. This raises all eigenvalues by λ, making the matrix well-conditioned. The result is that β_ridge is biased (coefficients are shrunk) but has dramatically lower variance — so it generalises better to test data despite being "wrong" on training data.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q5. Walk me through what happens when you have more features than observations (p &gt; n).</div>
+    <div class="a">Three things fail: (1) <strong>XᵀX is singular</strong> — rank(X) ≤ n, so XᵀX (p×p) cannot be inverted. Infinitely many β vectors give zero training error. (2) <strong>OLS overfits perfectly</strong> — with p &gt; n degrees of freedom, you can fit any training data exactly. Training R² = 1, test R² = garbage. (3) <strong>Coefficients are meaningless</strong> — you can't interpret which features matter. Fix: Lasso (selects a sparse subset), Ridge (shrinks and stabilises), or PCA (reduces to n dimensions first). Lasso is most natural here because it effectively reduces the problem to a smaller feature set.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q6. A model has high R² on training data but low R² on test data. What are all possible causes and fixes?</div>
+    <div class="a"><strong>Causes:</strong> (1) Too many features relative to data (overfitting). (2) Features were engineered on the full dataset before splitting (data leakage). (3) StandardScaler fit on full dataset (leakage). (4) Hyperparameters tuned on test set. (5) Test set is genuinely different in distribution (data drift).<br><br><strong>Fixes:</strong> (1) → Regularise with Ridge/Lasso, reduce features. (2) &amp; (3) → Use Pipeline — ensures all preprocessing is fit only on train. (4) → Use cross-validation, never touch test set during tuning. (5) → Collect more representative data, use robust features.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q7. What is heteroscedasticity, how would you detect it, and what would you do about it?</div>
+    <div class="a"><strong>What:</strong> The variance of residuals changes with fitted values (fan shape in residual plots). Example: predicting house prices — small houses have tight errors but large luxury homes have huge variability.<br><br><strong>Detect:</strong> (1) Residuals vs. Fitted plot — look for fan/funnel shape. (2) Scale-Location plot — should be flat. (3) Breusch-Pagan test (statsmodels).<br><br><strong>Fix:</strong> (1) Log-transform y — most effective when variance grows proportionally to y. (2) Weighted Least Squares — upweight low-variance observations. (3) Use HC3 robust standard errors (statsmodels.OLS with cov_type='HC3') — fixes p-values without changing β. (4) Box-Cox transformation — systematic approach to find the best power transform.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q8. How would you handle outliers in linear regression?</div>
+    <div class="a"><strong>First, diagnose:</strong> Cook's Distance plot, studentised residuals, leverage hat matrix.<br><strong>Then decide:</strong><br>(1) <strong>Data error</strong> → fix or remove the point.<br>(2) <strong>Genuine extreme case that should be modelled</strong> → use Huber Regression (sklearn's <code>HuberRegressor</code>) — behaves like OLS for small residuals, like MAE for large ones.<br>(3) <strong>Many scattered outliers</strong> → RANSAC (fits on random inlier subsets) or Theil-Sen estimator (median-based slopes).<br>(4) <strong>Transform y</strong> → log(y) often makes extreme values less extreme.<br>Never blindly remove outliers — always understand why they exist.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q9. You add 50 random features to your model and R² improves. Does that mean the model is better?</div>
+    <div class="a">No. R² always weakly increases when you add features — even random noise will marginally fit training fluctuations. This is the fundamental problem with R² for model selection. The right measures are: (1) <strong>Adjusted R²</strong> — penalises for adding features; if it decreases, the new features aren't worth it. (2) <strong>Cross-validation RMSE</strong> — truly out-of-sample performance; adding random features will degrade CV RMSE (overfitting). (3) <strong>AIC / BIC</strong> — information criteria that penalise complexity. The correct question is always: "Does adding this feature improve cross-validated performance?"</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q10. What are the pros and cons of using MAE vs. RMSE as your training loss?</div>
+    <div class="a"><strong>RMSE (MSE) as loss:</strong> Differentiable everywhere → closed-form solution possible. Gradient is smooth. Heavily penalises large errors → useful when big mistakes are costly. But amplifies outliers.<br><br><strong>MAE as loss:</strong> Robust to outliers — a single extreme point doesn't dominate. But non-differentiable at 0 (need subgradient). No closed-form OLS solution — must use iterative methods. In practice: train with RMSE (OLS is optimal), then report MAE as your evaluation metric if you want outlier-robust reporting. Or use HuberRegressor which transitions between the two.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q11. Explain data leakage in the context of a preprocessing pipeline.</div>
+    <div class="a">Leakage means your model secretly learns from the test set during training, producing unrealistically good metrics. The most common form: fitting a StandardScaler on the entire dataset before train/test split. The scaler computes mean and std from test set rows, so the "test set" is no longer truly unseen — its statistics were used in preprocessing. Fix: always use a Pipeline. Pipeline.fit(X_train) fits the scaler on train only. Pipeline.predict(X_test) applies those train-derived statistics to test. Other leakage forms: computing target encoding without CV, feature selection using all data before splitting, imputing missing values using the full dataset's mean.</div>
+  </div>
+
+  <div class="interview-box">
+    <div class="q">Q12. Walk me through building a production-ready linear regression model from scratch.</div>
+    <div class="a">
+      <strong>1. EDA:</strong> distributions, correlations (heatmap), missing values, outlier detection, target distribution shape.<br>
+      <strong>2. Preprocessing:</strong> impute missing values (median/mean), encode categoricals (one-hot, drop first), log-transform skewed features/target, StandardScaler in pipeline.<br>
+      <strong>3. Baseline:</strong> fit plain OLS, get train + 5-fold CV metrics (R², RMSE, MAE).<br>
+      <strong>4. Diagnostics:</strong> residuals vs. fitted, Q-Q plot, Scale-Location, Cook's Distance, VIF for multicollinearity.<br>
+      <strong>5. Address violations:</strong> transform features/target for non-linearity or heteroscedasticity; remove/combine collinear features.<br>
+      <strong>6. Regularise:</strong> try Ridge (RidgeCV), Lasso (LassoCV), ElasticNet. Compare CV performance.<br>
+      <strong>7. Interpret:</strong> report standardised coefficients, feature importance ranking, confidence intervals (statsmodels).<br>
+      <strong>8. Final evaluation:</strong> run on held-out test set exactly once. Report RMSE, MAE, R².<br>
+      <strong>9. Production:</strong> save full Pipeline with joblib.dump(). Monitor for data drift (input distribution) and concept drift (relationship changes) post-deployment.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="card card-purple">
+    <div class="card-title">🏁 Master Summary — Everything You Need to Remember</div>
+    <ul>
+      <li><strong>What it is:</strong> Fits ŷ = Xβ by minimising MSE = (1/n)Σ(y−ŷ)² via OLS or gradient descent</li>
+      <li><strong>Closed form:</strong> β = (XᵀX)⁻¹Xᵀy — sklearn uses SVD for numerical stability</li>
+      <li><strong>Assumptions (LINE-MO):</strong> Linearity, Independence, Normality of residuals, Equal Variance, No Multicollinearity, No Outliers — each with detection test and remedy</li>
+      <li><strong>Metrics:</strong> RMSE (interpretable, outlier-sensitive), MAE (robust, interpretable), R² (variance explained, always tune Adjusted R² for model selection), MAPE (percentage, avoid y≈0)</li>
+      <li><strong>Regularisation:</strong> Ridge (L2, no zeros, handles multicollinearity), Lasso (L1, exact zeros, feature selection), ElasticNet (both)</li>
+      <li><strong>Bias-Variance:</strong> regularisation increases bias but decreases variance — optimal λ found via cross-validation</li>
+      <li><strong>Pipeline is mandatory:</strong> prevents data leakage, ensures preprocessing uses only training data</li>
+      <li><strong>Always run 4 diagnostic plots</strong> after fitting: Residuals vs. Fitted, Q-Q, Scale-Location, Cook's Distance</li>
+      <li><strong>Pros:</strong> interpretable, fast, BLUE under assumptions, no hyperparameters (OLS), great baseline</li>
+      <li><strong>Cons:</strong> linearity assumption, outlier sensitivity, can't handle interactions automatically, strict assumptions for valid inference</li>
+    </ul>
+  </div>
+</section>
+
+</div><!-- /container -->
+<div style="background:var(--surface);border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--muted);font-size:.82rem;">
+  Linear Regression — Complete ML Textbook &nbsp;·&nbsp; 15 Sections · Every Concept · Pros &amp; Cons Throughout · 12 Interview Q&amp;As · Full sklearn Code
+</div>
+</body>
+</html>

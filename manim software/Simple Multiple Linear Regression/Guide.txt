@@ -1,0 +1,25 @@
+bash# Install system deps (Ubuntu/Debian)
+sudo apt install libpango1.0-dev libcairo2-dev ffmpeg dvisvgm texlive-latex-base texlive-fonts-recommended
+
+# Install Manim
+pip install manim
+
+# Render a scene (low quality for preview)
+manim -ql scene01_scatter.py ScatterPlotFormation
+
+# Render final quality (1080p)
+manim -qh scene01_scatter.py ScatterPlotFormation
+
+
+To render any single scene:
+manim -ql part6_linemo.py Anim22_L_Linearity
+To render a whole file at 1080p for final export:
+manim -qh part1_hook.py
+
+
+Rendering any single scene:
+manim -ql text_part8.py TextP_L1SparsityExplained
+Rendering a whole file:
+manim -ql text_part4.py
+
+manim -v INFO --flush_cache -pql .\pc_part1.py

@@ -1,0 +1,1 @@
+GIve me video thumbnail idea. It should mention my youtube channel name "The ML Notebook". Give direct prompt that I can feed to gemini. Image should be clickbait, minimalist and deceptively simple.
